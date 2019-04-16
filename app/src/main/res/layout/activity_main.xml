@@ -1,44 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_main_ll"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/activity_main_et_api1"
+    <ScrollView
+        android:id="@+id/activity_main_sv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:ems="10"
-        android:textSize="24sp"
-        android:text="Api 1"/>
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/activity_main_et_api2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginTop="0dp"
-        android:ems="10"
-        android:textSize="24sp"
-        android:text="Api 2" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/activity_main_et_api3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:ems="10"
-        android:textSize="24sp"
-        android:text="Api 3" />
+            <TextView
+                android:id="@+id/activity_main_et_api1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:text="Api 1"
+                android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/activity_main_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Получить АПИ"
-        android:onClick="onClickButtonGetApi"/>
-</LinearLayout>
+            <TextView
+                android:id="@+id/activity_main_et_api2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginTop="0dp"
+                android:ems="10"
+                android:text="Api 2"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/activity_main_et_api3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:text="Api 3"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/activity_main_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:onClick="onClickButtonGetApi"
+                android:text="Получить АПИ" />
+        </LinearLayout>
+    </ScrollView>
+

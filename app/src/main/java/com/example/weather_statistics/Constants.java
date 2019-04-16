@@ -1,7 +1,7 @@
 package com.example.weather_statistics;
 
 public class Constants {
-    public static String ACCUWEATHER_COM = "https://developer.accuweather.com/";
+    public static String ACCUWEATHER_COM = "https://dataservice.accuweather.com/";
     public static String OPENWEATHERMAP_COM = "http://api.openweathermap.org/";
     public static String ZALUPA_RU = "https://";
     public static String ACCUWEATHER_API_KEY = "GxWxbGf8Mwh74gEwcAtkq6Pfg9lGAiTf";
