@@ -8,13 +8,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class NetworkUtils {
-    public static String PARAM_API_KEY = "apikey";
 
     public static URL generateRequestAccuweather (String locationID){
         Uri buildRequest = Uri.parse(Constants.ACCUWEATHER_COM + Constants.ACCUWEATHER_FORECAST_5day
                 + locationID)
                         .buildUpon()
-                        .appendQueryParameter(PARAM_API_KEY, Constants.ACCUWEATHER_API_KEY)
+                        .appendQueryParameter("apikey", Constants.ACCUWEATHER_API_KEY)
                         .build();
 
         URL requestAccuweather = null;
@@ -25,6 +24,24 @@ public class NetworkUtils {
         }
 
         return requestAccuweather;
+    }
+
+    public static URL generateRequestOpenweathermap(String locationID){
+        Uri buildRequest = Uri.parse(Constants.OPENWEATHERMAP_COM + Constants.OPENWEATHERMAP_FORECAST_5day)
+                .buildUpon()
+                .appendQueryParameter("id", locationID)
+                .appendQueryParameter("APPID", Constants.OPENWEATHERMAP_API_KEY)
+                .appendQueryParameter("units", "metric")
+                .build();
+
+        URL requestOpenweathermap = null;
+        try {
+            requestOpenweathermap = new URL(buildRequest.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return requestOpenweathermap;
     }
 }
 
