@@ -18,6 +18,7 @@ public class NetworkUtils {
                 + locationID)
                         .buildUpon()
                         .appendQueryParameter("apikey", Constants.ACCUWEATHER_API_KEY)
+                        .appendQueryParameter("metric", "true")
                         .build();
 
         URL requestAccuweather = null;
@@ -68,6 +69,7 @@ public class NetworkUtils {
               httpURLConnection.disconnect();
         }
     }
+
 }
 
 

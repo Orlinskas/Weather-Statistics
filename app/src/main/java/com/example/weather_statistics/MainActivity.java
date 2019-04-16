@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 
+import static com.example.weather_statistics.utils.JsonUtils.getTemperatureAccuweather;
+import static com.example.weather_statistics.utils.JsonUtils.getTemperatureOpenweathermap;
 import static com.example.weather_statistics.utils.NetworkUtils.generateURLAccuweather;
 import static com.example.weather_statistics.utils.NetworkUtils.generateURLOpenweathermap;
 import static com.example.weather_statistics.utils.NetworkUtils.getResponceFromURL;
@@ -20,6 +22,7 @@ import static com.example.weather_statistics.utils.NetworkUtils.getResponceFromU
 public class MainActivity extends AppCompatActivity {
     private TextView textViewApi1, textViewApi2, textViewApi3;
     private Button buttonGetApi;
+
 
     class ApiGetResponce extends AsyncTask <URL, Void, String>{
 
@@ -38,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String responce){
-            textViewApi1.setText(responce);
+            textViewApi1.setText(getTemperatureAccuweather(responce));
+            textViewApi2.setText(getTemperatureOpenweathermap(responce));
         }
 
     }
@@ -56,8 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickButtonGetApi(View view) {
         URL check1 = generateURLAccuweather(Constants.ACCUWEATHER_KHARKIV_ID);
-        //URL check2 = generateURLOpenweathermap(Constants.OPENWEATHERMAP_KHARKIV_ID);
+        URL check2 = generateURLOpenweathermap(Constants.OPENWEATHERMAP_KHARKIV_ID);
         new ApiGetResponce().execute(check1);
+        new ApiGetResponce().execute(check2);
     }
 
 
