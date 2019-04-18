@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class NetworkUtils {
 
-    public static URL generateURLAccuweather(String locationID){
+    public static URL generateURLAccuWeather(String locationID){
         Uri buildRequest = Uri.parse(Constants.ACCUWEATHER_COM + Constants.ACCUWEATHER_FORECAST_5day
                 + locationID)
                         .buildUpon()
@@ -31,7 +31,7 @@ public class NetworkUtils {
         return requestAccuweather;
     }
 
-    public static URL generateURLOpenweathermap(String locationID){
+    public static URL generateURLOpenWeather(String locationID){
         Uri buildRequest = Uri.parse(Constants.OPENWEATHERMAP_COM + Constants.OPENWEATHERMAP_FORECAST_5day)
                 .buildUpon()
                 .appendQueryParameter("id", locationID)
@@ -49,7 +49,7 @@ public class NetworkUtils {
         return requestOpenweathermap;
     }
 
-    public static String getResponceFromURL(URL url) throws IOException {
+    public static String getResponseFromURL(URL url) throws IOException {
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
         try {

@@ -1,6 +1,5 @@
 package com.example.weather_statistics;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,13 +10,12 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Scanner;
 
-import static com.example.weather_statistics.utils.JsonUtils.getTemperatureAccuweather;
-import static com.example.weather_statistics.utils.JsonUtils.getTemperatureOpenweathermap;
-import static com.example.weather_statistics.utils.NetworkUtils.generateURLAccuweather;
-import static com.example.weather_statistics.utils.NetworkUtils.generateURLOpenweathermap;
-import static com.example.weather_statistics.utils.NetworkUtils.getResponceFromURL;
+import static com.example.weather_statistics.utils.JsonUtils.getTemperatureAccuWeather;
+import static com.example.weather_statistics.utils.JsonUtils.getTemperatureOpenWeather;
+import static com.example.weather_statistics.utils.NetworkUtils.generateURLAccuWeather;
+import static com.example.weather_statistics.utils.NetworkUtils.generateURLOpenWeather;
+import static com.example.weather_statistics.utils.NetworkUtils.getResponseFromURL;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textViewApi1, textViewApi2, textViewApi3;
@@ -28,21 +26,21 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(URL... urls) {
-            String responce = null;
+            String response = null;
 
             try {
-                responce = getResponceFromURL(urls[0]);
+                response = getResponseFromURL(urls[0]);
             } catch (IOException e){
                 e.printStackTrace();
             }
 
-            return responce;
+            return response;
         }
 
         @Override
-        protected void onPostExecute(String responce){
-            textViewApi1.setText(getTemperatureAccuweather(responce));
-            textViewApi2.setText(getTemperatureOpenweathermap(responce));
+        protected void onPostExecute(String response){
+            textViewApi1.setText(getTemperatureAccuWeather(response));
+            textViewApi2.setText(getTemperatureOpenWeather(response));
         }
 
     }
@@ -59,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickButtonGetApi(View view) {
-        URL check1 = generateURLAccuweather(Constants.ACCUWEATHER_KHARKIV_ID);
-        URL check2 = generateURLOpenweathermap(Constants.OPENWEATHERMAP_KHARKIV_ID);
+        URL check1 = generateURLAccuWeather(Constants.ACCUWEATHER_KHARKIV_ID);
+        URL check2 = generateURLOpenWeather(Constants.OPENWEATHERMAP_KHARKIV_ID);
         new ApiGetResponce().execute(check1);
         new ApiGetResponce().execute(check2);
     }

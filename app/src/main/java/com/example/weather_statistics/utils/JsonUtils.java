@@ -5,7 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class JsonUtils {
-    public static String getTemperatureAccuweather (String responce){
+    public static String getTemperatureAccuWeather(String response){
         byte temperatureOut = 0;
         int temperatureMin = 0;
         int temperatureMax = 0;
@@ -13,8 +13,8 @@ public class JsonUtils {
         String temperatureMaxString = null;
 
         try {
-            JSONObject jsonObjectAccuweather = new JSONObject(responce);
-            JSONArray jsonArrayDailyForecast = jsonObjectAccuweather.getJSONArray("DailyForecasts");
+            JSONObject jsonObjectAccuWeather = new JSONObject(response);
+            JSONArray jsonArrayDailyForecast = jsonObjectAccuWeather.getJSONArray("DailyForecasts");
             JSONObject jsonObjectDay = jsonArrayDailyForecast.getJSONObject(1);
             JSONObject jsonObjectDayTemperature = jsonObjectDay.getJSONObject("Temperature");
             JSONObject jsonObjectDayTemperatureMin = jsonObjectDayTemperature.getJSONObject("Minimum");
@@ -27,7 +27,7 @@ public class JsonUtils {
         return temperatureMinString;
     }
 
-    public static String getTemperatureOpenweathermap (String responce){
+    public static String getTemperatureOpenWeather(String response){
         byte temperatureOut = 0;
         int temperatureMin = 0;
         int temperatureMax = 0;
@@ -35,8 +35,8 @@ public class JsonUtils {
         String temperatureMaxString = null;
 
         try {
-            JSONObject jsonObjectOpenweathermap = new JSONObject(responce);
-            JSONArray jsonArrayDays = jsonObjectOpenweathermap.getJSONArray("list");
+            JSONObject jsonObjectOpenWeather = new JSONObject(response);
+            JSONArray jsonArrayDays = jsonObjectOpenWeather.getJSONArray("list");
             JSONObject jsonObjectDay = jsonArrayDays.getJSONObject(1);
             JSONObject jsonObjectDayTemperature = jsonObjectDay.getJSONObject("main");
             temperatureMinString = jsonObjectDayTemperature.getString("temp");
