@@ -39,6 +39,24 @@
                 android:text="Api 3"
                 android:textSize="24sp" />
 
+            <TextView
+                android:id="@+id/activity_main_et_api4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:text="Api 4"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/activity_main_et_api5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:text="Api 5"
+                android:textSize="24sp" />
+
             <Button
                 android:id="@+id/activity_main_btn"
                 android:layout_width="match_parent"

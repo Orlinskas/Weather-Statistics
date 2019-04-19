@@ -18,11 +18,11 @@ import static com.example.weather_statistics.utils.NetworkUtils.generateURLOpenW
 import static com.example.weather_statistics.utils.NetworkUtils.getResponseFromURL;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView textViewApi1, textViewApi2, textViewApi3;
+    private TextView textViewApi1, textViewApi2, textViewApi3, textViewApi4, textViewApi5;
     private Button buttonGetApi;
 
 
-    class ApiGetResponce extends AsyncTask <URL, Void, String>{
+    class ApiGetResponse extends AsyncTask <URL, Void, String>{
 
         @Override
         protected String doInBackground(URL... urls) {
@@ -39,8 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response){
-            textViewApi1.setText(getTemperatureAccuWeather(response));
-            textViewApi2.setText(getTemperatureOpenWeather(response));
+            WeatherParserAcuuWeather openWeather = new WeatherParserAcuuWeather();
+
+            textViewApi1.setText(openWeather.parse(response).get(1).getDate().toString());
+            textViewApi2.setText(Float.toString(openWeather.parse(response).get(1).getTemperature()));
+            textViewApi3.setText(openWeather.parse(response).get(1).getSource());
+            textViewApi4.setText(openWeather.parse(response).get(1).getLocation());
         }
 
     }
@@ -53,14 +57,15 @@ public class MainActivity extends AppCompatActivity {
         textViewApi1 = findViewById(R.id.activity_main_et_api1);
         textViewApi2 = findViewById(R.id.activity_main_et_api2);
         textViewApi3 = findViewById(R.id.activity_main_et_api3);
-
+        textViewApi4 = findViewById(R.id.activity_main_et_api4);
+        textViewApi5 = findViewById(R.id.activity_main_et_api5);
     }
 
     public void onClickButtonGetApi(View view) {
         URL check1 = generateURLAccuWeather(Constants.ACCUWEATHER_KHARKIV_ID);
-        URL check2 = generateURLOpenWeather(Constants.OPENWEATHERMAP_KHARKIV_ID);
-        new ApiGetResponce().execute(check1);
-        new ApiGetResponce().execute(check2);
+       // URL check2 = generateURLOpenWeather("706483");
+        new ApiGetResponse().execute(check1);
+        //new ApiGetResponse().execute(check2);
     }
 
 

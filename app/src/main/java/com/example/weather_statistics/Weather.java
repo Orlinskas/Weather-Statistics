@@ -3,18 +3,17 @@ package com.example.weather_statistics;
 import java.util.Date;
 
 public class Weather {
-    private int temperature;
+    private float temperature;
     private Date date;
     private String source;
     private String location;
 
-
-    public int getTemperature() {
+    public float getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(int temperature) {
-        if (temperature > -90 & temperature < 57) {
+    public void setTemperature(float temperature) {
+        if (temperature > -90f & temperature < 57f) {
             this.temperature = temperature;
         }
     }
