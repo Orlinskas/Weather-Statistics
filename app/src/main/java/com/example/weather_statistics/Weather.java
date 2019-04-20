@@ -1,5 +1,6 @@
 package com.example.weather_statistics;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Weather {
@@ -14,7 +15,11 @@ public class Weather {
 
     public void setTemperature(float temperature) {
         if (temperature > -90f & temperature < 57f) {
+           // DecimalFormat decimalFormat = new DecimalFormat("#.0");
             this.temperature = temperature;
+        }
+        else {
+            this.temperature = 0.0f;
         }
     }
 

@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class WeatherParserOpenWeather implements WeatherSourceResponseParseInterface {
+
+    @Override
     public ArrayList<Weather> parse(String json){
         ArrayList<Weather> weathers = new ArrayList<>();
 

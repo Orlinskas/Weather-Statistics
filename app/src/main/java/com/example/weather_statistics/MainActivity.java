@@ -8,43 +8,37 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.net.URL;
-
-import static com.example.weather_statistics.utils.JsonUtils.getTemperatureAccuWeather;
-import static com.example.weather_statistics.utils.JsonUtils.getTemperatureOpenWeather;
-import static com.example.weather_statistics.utils.NetworkUtils.generateURLAccuWeather;
-import static com.example.weather_statistics.utils.NetworkUtils.generateURLOpenWeather;
-import static com.example.weather_statistics.utils.NetworkUtils.getResponseFromURL;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textViewApi1, textViewApi2, textViewApi3, textViewApi4, textViewApi5;
     private Button buttonGetApi;
 
 
-    class ApiGetResponse extends AsyncTask <URL, Void, String>{
+    class ApiGetResponse extends AsyncTask <Void, Void, Void>{
 
         @Override
-        protected String doInBackground(URL... urls) {
-            String response = null;
-
-            try {
-                response = getResponseFromURL(urls[0]);
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-
-            return response;
+        protected void onPreExecute() {
+            super.onPreExecute();
+            textViewApi1.setText("work");
         }
 
         @Override
-        protected void onPostExecute(String response){
-            WeatherParserAcuuWeather openWeather = new WeatherParserAcuuWeather();
+        protected Void doInBackground(Void... voids) {
+            WeatherRequestSenderAccuWeather requestSenderAccuWeather = new WeatherRequestSenderAccuWeather();
+            WeatherRequestSenderOpenWeather requestSenderOpenWeather = new WeatherRequestSenderOpenWeather();
 
-            textViewApi1.setText(openWeather.parse(response).get(1).getDate().toString());
-            textViewApi2.setText(Float.toString(openWeather.parse(response).get(1).getTemperature()));
-            textViewApi3.setText(openWeather.parse(response).get(1).getSource());
-            textViewApi4.setText(openWeather.parse(response).get(1).getLocation());
+            WeatherParserAcuuWeather parserAcuuWeather = new WeatherParserAcuuWeather();
+            WeatherParserOpenWeather parserOpenWeather = new WeatherParserOpenWeather();
+
+            parserAcuuWeather.parse(requestSenderAccuWeather.requestWeather(Constants.ACCUWEATHER_KHARKIV_ID));
+            parserOpenWeather.parse(requestSenderOpenWeather.requestWeather(Constants.OPENWEATHERMAP_KHARKIV_ID));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            textViewApi2.setText("work done");
         }
 
     }
@@ -62,10 +56,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickButtonGetApi(View view) {
-        URL check1 = generateURLAccuWeather(Constants.ACCUWEATHER_KHARKIV_ID);
-       // URL check2 = generateURLOpenWeather("706483");
-        new ApiGetResponse().execute(check1);
-        //new ApiGetResponse().execute(check2);
+         new ApiGetResponse().execute();
     }
 
 

@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInterface {
+
+    @Override
     public ArrayList<Weather> parse(String json){
         ArrayList<Weather> weathers = new ArrayList<>();
 
@@ -36,7 +38,7 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
 
 
                 JSONArray jsonArrayDaySources = jsonObjectDay.getJSONArray("Sources");
-                sourse = jsonArrayDaySources.getString(index);
+                sourse = jsonArrayDaySources.getString(0);
 
                 link = jsonObjectDay.getString("Link");
             } catch (JSONException e) {
@@ -44,7 +46,7 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
             }
 
             Weather weather = new Weather();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.ZZZ", Locale.ENGLISH);
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
 
             try {
                 weather.setDate(format.parse(date));
@@ -61,6 +63,7 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
     }
 
     private String linkParserToLocation(String link){
+        //поскольку название города содержится только в длинной строке джсон, мы его вырезаем
         ArrayList<Character> town = new ArrayList<>();
         int count = 0;
 
@@ -68,10 +71,12 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
             if (ch == '/'){
                 count++;
             }
-            if (count==5){
-                town.add(ch);
+            if (count == 5){
+                if (ch != '/') { //к сожалению алгоритм не совершеннен и приходится убирать первый слэш
+                    town.add(ch);
+                }
             }
-            if (count==6){
+            if (count == 6){
                 break;
             }
         }
