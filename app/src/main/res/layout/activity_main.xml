@@ -11,6 +11,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/activity_main_et_api1"
                 android:layout_width="match_parent"
@@ -64,6 +70,7 @@
                 android:layout_margin="10dp"
                 android:onClick="onClickButtonGetApi"
                 android:text="Получить АПИ" />
+
         </LinearLayout>
     </ScrollView>
 
