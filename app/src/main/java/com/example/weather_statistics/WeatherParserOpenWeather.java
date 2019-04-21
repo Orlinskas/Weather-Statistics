@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 public class WeatherParserOpenWeather implements WeatherSourceResponseParseInterface {
@@ -16,6 +17,7 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
     public ArrayList<Weather> parse(String json){
         ArrayList<Weather> weathers = new ArrayList<>();
 
+        Date effectiveDate = new Date();
         String date = null;
         String temperature = null;
         String sourse = "OpenWeatherMap";
@@ -43,6 +45,7 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
 
             try {
                 weather.setDate(format.parse(date));
+                weather.setEffectiveDate(effectiveDate);
                 weather.setTemperature(Float.parseFloat(temperature));
                 weather.setSource(sourse);
                 weather.setLocation(location);

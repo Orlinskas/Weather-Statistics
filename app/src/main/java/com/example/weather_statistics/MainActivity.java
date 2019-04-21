@@ -38,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
             try {
                 int value = 0;
 
-                parserAcuuWeather.parse(requestSenderAccuWeather.requestWeather(Constants.ACCUWEATHER_KHARKIV_ID));
+
+                //Закончились вызовы АПИ
+                //parserAcuuWeather.parse(requestSenderAccuWeather.requestWeather(Constants.ACCUWEATHER_KHARKIV_ID));
                 publishProgress(++value);
 
                 parserOpenWeather.parse(requestSenderOpenWeather.requestWeather(Constants.OPENWEATHERMAP_KHARKIV_ID));
