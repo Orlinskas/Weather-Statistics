@@ -1,17 +1,26 @@
 package com.example.weather_statistics;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class Weather {
+    private int id;
+    private String effectiveDate;
+    private String date;
     private float temperature;
-    private Date date;
-    private Date effectiveDate;
-    private String source;
     private String location;
+    private String source;
+
+
+    public Weather(int id, String effectiveDate, String date, float temperature, String location, String source){
+        this.id = id;
+        this.effectiveDate = effectiveDate;
+        this.date = date;
+        this.temperature = temperature;
+        this.location = location;
+        this.source = source;
+    }
+
+    public Weather() {
+    }
 
     public float getTemperature() {
         return temperature;
@@ -25,15 +34,6 @@ public class Weather {
         else {
             this.temperature = 0.0f;
         }
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH", Locale.ENGLISH);
-        this.date = simpleDateFormat.parse(simpleDateFormat.format(date));
     }
 
     public String getSource() {
@@ -52,12 +52,27 @@ public class Weather {
         this.location = location;
     }
 
-    public Date getEffectiveDate() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEffectiveDate() {
         return effectiveDate;
     }
 
-    public void setEffectiveDate(Date effectiveDate) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH", Locale.ENGLISH);
-        this.effectiveDate = simpleDateFormat.parse(simpleDateFormat.format(effectiveDate));
+    public void setEffectiveDate(String effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

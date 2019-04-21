@@ -4,12 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+
 
 public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInterface {
 
@@ -17,7 +13,7 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
     public ArrayList<Weather> parse(String json){
         ArrayList<Weather> weathers = new ArrayList<>();
 
-        Date effectiveDate = new Date();
+        String effectiveDate = null;
         String date = null;
         String temperatureMin = null;
         String temperatureMax = null;
@@ -31,6 +27,10 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
                 JSONArray jsonArrayDailyForecast = jsonObjectAccuWeather.getJSONArray("DailyForecasts");
                 JSONObject jsonObjectDay = jsonArrayDailyForecast.getJSONObject(index);
                 date = jsonObjectDay.getString("Date");
+
+                if(index == 1){
+                    effectiveDate = date;
+                }
 
                 JSONObject jsonObjectDayTemperature = jsonObjectDay.getJSONObject("Temperature");
                 JSONObject jsonObjectDayTemperatureMin = jsonObjectDayTemperature.getJSONObject("Minimum");
@@ -48,18 +48,12 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
             }
 
             Weather weather = new Weather();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
-
-            try {
-                weather.setDate(format.parse(date));
-                weather.setEffectiveDate(effectiveDate);
-                weather.setTemperature(temperatureParser(temperatureMin, temperatureMax));
-                weather.setSource(sourse);
-                weather.setLocation(linkParserToLocation(link));
-                weathers.add(weather);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            weather.setDate(date);
+            weather.setEffectiveDate(effectiveDate);
+            weather.setTemperature(temperatureParser(temperatureMin, temperatureMax));
+            weather.setSource(sourse);
+            weather.setLocation(linkParserToLocation(link));
+            weathers.add(weather);
         }
 
         return weathers;

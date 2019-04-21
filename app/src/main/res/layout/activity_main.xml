@@ -71,6 +71,14 @@
                 android:onClick="onClickButtonGetApi"
                 android:text="Получить АПИ" />
 
+            <Button
+                android:id="@+id/btn_saveData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:onClick="onClickButtonSaveData"
+                android:text="Записать в БД" />
+
         </LinearLayout>
     </ScrollView>
 

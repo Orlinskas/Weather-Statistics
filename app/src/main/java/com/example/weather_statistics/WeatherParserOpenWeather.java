@@ -4,12 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+
 
 public class WeatherParserOpenWeather implements WeatherSourceResponseParseInterface {
 
@@ -17,7 +13,7 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
     public ArrayList<Weather> parse(String json){
         ArrayList<Weather> weathers = new ArrayList<>();
 
-        Date effectiveDate = new Date();
+        String effectiveDate = null;
         String date = null;
         String temperature = null;
         String sourse = "OpenWeatherMap";
@@ -28,6 +24,11 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
                 JSONObject jsonObjectOpenWeather = new JSONObject(json);
                 JSONArray jsonArrayDailyForecast = jsonObjectOpenWeather.getJSONArray("list");
                 JSONObject jsonObjectDay = jsonArrayDailyForecast.getJSONObject(index);
+
+                if(index == 0){
+                    effectiveDate = jsonObjectDay.getString("dt_txt");
+                }
+
                 date = jsonObjectDay.getString("dt_txt");
 
                 JSONObject jsonObjectDayTemperature = jsonObjectDay.getJSONObject("main");
@@ -41,18 +42,12 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
             }
 
             Weather weather = new Weather();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss" , Locale.ENGLISH);
-
-            try {
-                weather.setDate(format.parse(date));
-                weather.setEffectiveDate(effectiveDate);
-                weather.setTemperature(Float.parseFloat(temperature));
-                weather.setSource(sourse);
-                weather.setLocation(location);
-                weathers.add(weather);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            weather.setDate(date);
+            weather.setEffectiveDate(effectiveDate);
+            weather.setTemperature(Float.parseFloat(temperature));
+            weather.setSource(sourse);
+            weather.setLocation(location);
+            weathers.add(weather);
         }
 
         return weathers;

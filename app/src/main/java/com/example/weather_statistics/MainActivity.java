@@ -1,5 +1,6 @@
 package com.example.weather_statistics;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,13 +10,21 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.weather_statistics.date.DatabaseHelper;
+
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
     private TextView textViewApi1, textViewApi2, textViewApi3, textViewApi4, textViewApi5;
-    private Button buttonGetApi;
+    private Button buttonGetApi, buttonData;
     private ProgressBar progressBarHorizontal;
+    private Date effectiveDate = new Date();
+    private String date = null;
+    private String temperature = null;
+    private String sourse = "OpenWeatherMap";
+    private String location = null;
 
     WeatherRequestSenderAccuWeather requestSenderAccuWeather = new WeatherRequestSenderAccuWeather();
     WeatherRequestSenderOpenWeather requestSenderOpenWeather = new WeatherRequestSenderOpenWeather();
@@ -78,12 +87,19 @@ public class MainActivity extends AppCompatActivity {
         textViewApi3 = findViewById(R.id.activity_main_et_api3);
         textViewApi4 = findViewById(R.id.activity_main_et_api4);
         textViewApi5 = findViewById(R.id.activity_main_et_api5);
+        buttonGetApi = findViewById(R.id.activity_main_btn);
+        buttonData = findViewById(R.id.btn_saveData);
         progressBarHorizontal = findViewById(R.id.progressBar2);
         progressBarHorizontal.setMax(2);
     }
 
     public void onClickButtonGetApi(View view) {
          new ApiGetResponse().execute();
+
+    }
+
+    public void onClickButtonSaveData(View view) {
+
     }
 
 
