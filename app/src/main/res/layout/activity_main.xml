@@ -63,6 +63,15 @@
                 android:text="Api 5"
                 android:textSize="24sp" />
 
+            <TextView
+                android:id="@+id/activity_main_et_api6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:text="Api 6"
+                android:textSize="24sp" />
+
             <Button
                 android:id="@+id/activity_main_btn"
                 android:layout_width="match_parent"
@@ -78,6 +87,62 @@
                 android:layout_margin="10dp"
                 android:onClick="onClickButtonSaveData"
                 android:text="Записать в БД" />
+
+            <TextView
+                android:id="@+id/activity_main_et_data1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:text="data"
+                android:textSize="24sp" />
+            <TextView
+                android:id="@+id/activity_main_et_data2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:text="data"
+                android:textSize="24sp" />
+            <TextView
+                android:id="@+id/activity_main_et_data3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:text="data"
+                android:textSize="24sp" />
+            <TextView
+                android:id="@+id/activity_main_et_data4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:text="data"
+                android:textSize="24sp" />
+            <TextView
+                android:id="@+id/activity_main_et_data5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:text="data"
+                android:textSize="24sp" />
+            <TextView
+                android:id="@+id/activity_main_et_data6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:text="data"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/buttonGetData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Получить из базы"
+                android:onClick="onClickButtonGetData"/>
 
         </LinearLayout>
     </ScrollView>
