@@ -4,7 +4,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInterface {
@@ -13,7 +17,8 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
     public ArrayList<Weather> parse(String json){
         ArrayList<Weather> weathers = new ArrayList<>();
 
-        String effectiveDate = null;
+        SimpleDateFormat dateFormatData = new SimpleDateFormat(Constants.COMMON_DATEDATA_FORMAT, Locale.ENGLISH);
+        String effectiveDate = dateFormatData.format(new Date());
         String date = null;
         String temperatureMin = null;
         String temperatureMax = null;
@@ -26,11 +31,11 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
 
                 JSONArray jsonArrayDailyForecast = jsonObjectAccuWeather.getJSONArray("DailyForecasts");
                 JSONObject jsonObjectDay = jsonArrayDailyForecast.getJSONObject(index);
-                date = jsonObjectDay.getString("Date");
 
-                if(index == 1){
-                    effectiveDate = date;
-                }
+                date = jsonObjectDay.getString("Date");
+                SimpleDateFormat dateFormatJson = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss ", Locale.ENGLISH);
+                Date dateJson = dateFormatJson.parse(date);
+                date = dateFormatData.format(dateJson);
 
                 JSONObject jsonObjectDayTemperature = jsonObjectDay.getJSONObject("Temperature");
                 JSONObject jsonObjectDayTemperatureMin = jsonObjectDayTemperature.getJSONObject("Minimum");
@@ -43,7 +48,10 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
                 sourse = jsonArrayDaySources.getString(0);
 
                 link = jsonObjectDay.getString("Link");
+
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 

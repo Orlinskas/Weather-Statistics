@@ -2,7 +2,6 @@ package com.example.weather_statistics;
 
 
 public class Weather {
-    private int id;
     private String effectiveDate;
     private String date;
     private float temperature;
@@ -10,8 +9,7 @@ public class Weather {
     private String source;
 
 
-    public Weather(int id, String effectiveDate, String date, float temperature, String location, String source){
-        this.id = id;
+    public Weather(String effectiveDate, String date, float temperature, String location, String source){
         this.effectiveDate = effectiveDate;
         this.date = date;
         this.temperature = temperature;
@@ -50,14 +48,6 @@ public class Weather {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getEffectiveDate() {

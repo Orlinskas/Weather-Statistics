@@ -1,6 +1,5 @@
 package com.example.weather_statistics;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,13 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.weather_statistics.date.DatabaseAdapter;
 import com.example.weather_statistics.date.DatabaseHelper;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,51 +21,98 @@ public class MainActivity extends AppCompatActivity {
             , tvData1, tvData2, tvData3, tvData4, tvData5, tvData6;
     private Button buttonGetApi, buttonData;
     private ProgressBar progressBarHorizontal;
-    private Date effectiveDate = new Date();
-    private String date = null;
-    private String temperature = null;
-    private String sourse = "OpenWeatherMap";
-    private String location = null;
-
-    ArrayList<Weather> weathers = new ArrayList<>();
-
-    WeatherRequestSenderAccuWeather requestSenderAccuWeather = new WeatherRequestSenderAccuWeather();
-    WeatherRequestSenderOpenWeather requestSenderOpenWeather = new WeatherRequestSenderOpenWeather();
-
-    WeatherParserAcuuWeather parserAcuuWeather = new WeatherParserAcuuWeather();
-    WeatherParserOpenWeather parserOpenWeather = new WeatherParserOpenWeather();
 
     DatabaseAdapter database;
 
 
+    class ApiGetDataInsertAccuWeather extends AsyncTask <String, Integer, Void>{
+        ArrayList<Weather> weathers = new ArrayList<>();
+        WeatherRequestSenderAccuWeather requestSenderAccuWeather = new WeatherRequestSenderAccuWeather();
+        WeatherParserAcuuWeather parserAcuuWeather = new WeatherParserAcuuWeather();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            buttonData.setVisibility(View.INVISIBLE);
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Wait please...", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+        @Override
+        protected Void doInBackground(String... locationID) {
+            int countID, countProgress = 1;
+
+            for (countID = 0; countID < locationID.length; countID++){
+                weathers = parserAcuuWeather
+                        .parse(requestSenderAccuWeather.requestWeather(locationID[countID]));
+                ++countProgress;
+                publishProgress(countProgress);
+
+                for (Weather weather : weathers ){
+                    database.open();
+                    database.insert(weather, DatabaseHelper.TABLE_ACCU_WEATHER);
+                    database.close();
+                    ++countProgress;
+                    publishProgress(countProgress);
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            progressBarHorizontal.setProgress(values[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            buttonData.setVisibility(View.VISIBLE);
+            progressBarHorizontal.setProgress(progressBarHorizontal.getMax());
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Data collected", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+    }
 
 
-    class ApiGetResponse extends AsyncTask <Void, Integer, Void>{
+    class ApiGetDataInsertOpenWeather extends AsyncTask <String, Integer, Void>{
+        ArrayList<Weather> weathers = new ArrayList<>();
+        WeatherRequestSenderOpenWeather requestSenderOpenWeather = new WeatherRequestSenderOpenWeather();
+        WeatherParserOpenWeather parserOpenWeather = new WeatherParserOpenWeather();
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             buttonGetApi.setVisibility(View.INVISIBLE);
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Try..wait", Toast.LENGTH_SHORT);
+            toast.show();
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(String... locationID) {
+            int countID, countProgress = 1;
 
-            try {
-                int value = 0;
+            for (countID = 0; countID < locationID.length; countID++){
+                weathers = parserOpenWeather
+                        .parse(requestSenderOpenWeather.requestWeather(locationID[countID]));
+                ++countProgress;
+                publishProgress(countProgress);
 
-
-                //Закончились вызовы АПИ
-                //parserAcuuWeather.parse(requestSenderAccuWeather.requestWeather(Constants.ACCUWEATHER_KHARKIV_ID));
-                publishProgress(++value);
-
-                weathers = parserOpenWeather.parse(requestSenderOpenWeather.requestWeather(Constants.OPENWEATHERMAP_KHARKIV_ID));
-                publishProgress(++value);
-
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                for (Weather weather : weathers ){
+                    database.open();
+                    database.insert(weather, DatabaseHelper.TABLE_OPEN_WEATHER);
+                    database.close();
+                    ++countProgress;
+                    publishProgress(countProgress);
+                }
             }
+
             return null;
         }
 
@@ -81,14 +126,10 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             buttonGetApi.setVisibility(View.VISIBLE);
-            progressBarHorizontal.setProgress(0);
-
-            textViewApi1.setText(weathers.get(1).getEffectiveDate());
-            textViewApi2.setText(weathers.get(1).getDate());
-            textViewApi3.setText(Float.toString(weathers.get(1).getTemperature()));
-            textViewApi4.setText(weathers.get(1).getLocation());
-            textViewApi5.setText(weathers.get(1).getSource());
-
+            progressBarHorizontal.setProgress(progressBarHorizontal.getMax());
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Data collected", Toast.LENGTH_SHORT);
+            toast.show();
         }
 
     }
@@ -112,30 +153,21 @@ public class MainActivity extends AppCompatActivity {
         tvData5 = findViewById(R.id.activity_main_et_data5);
         tvData6 = findViewById(R.id.activity_main_et_data6);
         progressBarHorizontal = findViewById(R.id.progressBar2);
-        progressBarHorizontal.setMax(2);
+        progressBarHorizontal.setMax(100);
         database = new DatabaseAdapter(this);
     }
 
     public void onClickButtonGetApi(View view) {
-         new ApiGetResponse().execute();
+         new ApiGetDataInsertOpenWeather().execute(Constants.OPENWEATHERMAP_KHARKIV_ID,
+                 Constants.OPENWEATHERMAP_MOSKOW_ID);
     }
 
     public void onClickButtonSaveData(View view) {
-        database.open();
-        database.insert(weathers.get(1));
-        database.close();
+        new ApiGetDataInsertAccuWeather().execute(Constants.ACCUWEATHER_KHARKIV_ID);
     }
 
     public void onClickButtonGetData(View view) {
-        database.open();
-        Weather weather = database.getWeather(1);
-        //tvData1.setText(weather.getId());
-        tvData2.setText(weather.getEffectiveDate());
-        tvData3.setText(weather.getDate());
-        tvData4.setText(Float.toString(weather.getTemperature()));
-        tvData5.setText(weather.getLocation());
-        tvData5.setText(weather.getSource());
-        database.close();
+
     }
 
 }

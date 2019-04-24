@@ -1,10 +1,16 @@
 package com.example.weather_statistics;
 
+import android.provider.ContactsContract;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class WeatherParserOpenWeather implements WeatherSourceResponseParseInterface {
@@ -13,7 +19,8 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
     public ArrayList<Weather> parse(String json){
         ArrayList<Weather> weathers = new ArrayList<>();
 
-        String effectiveDate = null;
+        SimpleDateFormat dateFormatData = new SimpleDateFormat(Constants.COMMON_DATEDATA_FORMAT, Locale.ENGLISH);
+        String effectiveDate = dateFormatData.format(new Date());
         String date = null;
         String temperature = null;
         String sourse = "OpenWeatherMap";
@@ -25,11 +32,10 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
                 JSONArray jsonArrayDailyForecast = jsonObjectOpenWeather.getJSONArray("list");
                 JSONObject jsonObjectDay = jsonArrayDailyForecast.getJSONObject(index);
 
-                if(index == 0){
-                    effectiveDate = jsonObjectDay.getString("dt_txt");
-                }
-
                 date = jsonObjectDay.getString("dt_txt");
+                SimpleDateFormat dateFormatJson = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                Date dateJson = dateFormatJson.parse(date);
+                date = dateFormatData.format(dateJson);
 
                 JSONObject jsonObjectDayTemperature = jsonObjectDay.getJSONObject("main");
                 temperature = jsonObjectDayTemperature.getString("temp");
@@ -38,6 +44,8 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
                 location = jsonObjectCity.getString("name");
 
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 
