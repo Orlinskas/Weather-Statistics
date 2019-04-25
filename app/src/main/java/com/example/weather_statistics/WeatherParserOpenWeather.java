@@ -1,7 +1,5 @@
 package com.example.weather_statistics;
 
-import android.provider.ContactsContract;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,12 +17,12 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
     public ArrayList<Weather> parse(String json){
         ArrayList<Weather> weathers = new ArrayList<>();
 
-        SimpleDateFormat dateFormatData = new SimpleDateFormat(Constants.COMMON_DATEDATA_FORMAT, Locale.ENGLISH);
-        String effectiveDate = dateFormatData.format(new Date());
-        String date = null;
-        String temperature = null;
+        SimpleDateFormat commonFormat = new SimpleDateFormat(Constants.COMMON_DATEDATA_FORMAT, Locale.ENGLISH);
+        String effectiveDate = commonFormat.format(new Date());
+        String date;
+        String temperature;
         String sourse = "OpenWeatherMap";
-        String location = null;
+        String location;
 
         for (int index = 0; index <= 39; index++){
             try {
@@ -35,7 +33,7 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
                 date = jsonObjectDay.getString("dt_txt");
                 SimpleDateFormat dateFormatJson = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                 Date dateJson = dateFormatJson.parse(date);
-                date = dateFormatData.format(dateJson);
+                date = commonFormat.format(dateJson);
 
                 JSONObject jsonObjectDayTemperature = jsonObjectDay.getJSONObject("main");
                 temperature = jsonObjectDayTemperature.getString("temp");
@@ -45,14 +43,27 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
 
             } catch (JSONException e) {
                 e.printStackTrace();
+                date = Constants.ERROR;
+                temperature = Constants.ERROR;
+                sourse = Constants.ERROR;
+                location = Constants.ERROR;
             } catch (ParseException e) {
                 e.printStackTrace();
+                date = Constants.ERROR;
+                temperature = Constants.ERROR;
+                sourse = Constants.ERROR;
+                location = Constants.ERROR;
             }
 
             Weather weather = new Weather();
             weather.setDate(date);
             weather.setEffectiveDate(effectiveDate);
-            weather.setTemperature(Float.parseFloat(temperature));
+            if (temperature != null) {
+                weather.setTemperature(Float.parseFloat(temperature));
+            }
+            else {
+                weather.setTemperature(0.0f);
+            }
             weather.setSource(sourse);
             weather.setLocation(location);
             weathers.add(weather);

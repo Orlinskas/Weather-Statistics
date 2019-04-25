@@ -17,13 +17,13 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
     public ArrayList<Weather> parse(String json){
         ArrayList<Weather> weathers = new ArrayList<>();
 
-        SimpleDateFormat dateFormatData = new SimpleDateFormat(Constants.COMMON_DATEDATA_FORMAT, Locale.ENGLISH);
-        String effectiveDate = dateFormatData.format(new Date());
-        String date = null;
-        String temperatureMin = null;
-        String temperatureMax = null;
-        String sourse = null;
-        String link = null;
+        SimpleDateFormat commonFormat = new SimpleDateFormat(Constants.COMMON_DATEDATA_FORMAT, Locale.ENGLISH);
+        String effectiveDate = commonFormat.format(new Date());
+        String date;
+        String temperatureMin;
+        String temperatureMax;
+        String sourse;
+        String link;
 
         for(int index = 1; index <= 4; index++ ) {
             try {
@@ -33,9 +33,11 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
                 JSONObject jsonObjectDay = jsonArrayDailyForecast.getJSONObject(index);
 
                 date = jsonObjectDay.getString("Date");
-                SimpleDateFormat dateFormatJson = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss ", Locale.ENGLISH);
+                StringBuilder stringBuffer = new StringBuilder(date);
+                date = stringBuffer.delete(16, date.length()).toString();
+                SimpleDateFormat dateFormatJson = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.ENGLISH);
                 Date dateJson = dateFormatJson.parse(date);
-                date = dateFormatData.format(dateJson);
+                date = commonFormat.format(dateJson);
 
                 JSONObject jsonObjectDayTemperature = jsonObjectDay.getJSONObject("Temperature");
                 JSONObject jsonObjectDayTemperatureMin = jsonObjectDayTemperature.getJSONObject("Minimum");
@@ -51,8 +53,18 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
 
             } catch (JSONException e) {
                 e.printStackTrace();
+                date = Constants.ERROR;
+                temperatureMin = Constants.ERROR;
+                temperatureMax = Constants.ERROR;
+                sourse = Constants.ERROR;
+                link = Constants.ERROR;
             } catch (ParseException e) {
                 e.printStackTrace();
+                date = Constants.ERROR;
+                temperatureMin = Constants.ERROR;
+                temperatureMax = Constants.ERROR;
+                sourse = Constants.ERROR;
+                link = Constants.ERROR;
             }
 
             Weather weather = new Weather();
@@ -60,7 +72,12 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
             weather.setEffectiveDate(effectiveDate);
             weather.setTemperature(temperatureParser(temperatureMin, temperatureMax));
             weather.setSource(sourse);
-            weather.setLocation(linkParserToLocation(link));
+            if (link != null) {
+                weather.setLocation(linkParserToLocation(link));
+            }
+            else {
+                weather.setLocation(Constants.ERROR);
+            }
             weathers.add(weather);
         }
 
