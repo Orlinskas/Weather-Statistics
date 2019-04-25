@@ -13,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity
-            android:name=".MainActivity"
+            android:name=".GraphicsActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +23,51 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ConnectionActivity"
+            android:label="@string/action_connection"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name=".ConnectionActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".DataActivity"
+            android:label="@string/action_data"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name=".DataActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/action_settings"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name=".SettingsActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".HelpActivity"
+            android:label="@string/action_help"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name=".HelpActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
