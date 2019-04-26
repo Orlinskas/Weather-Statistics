@@ -25,7 +25,7 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
         String sourse;
         String link;
 
-        for(int index = 1; index <= 4; index++ ) {
+        for(int index = 0; index <= 4; index++ ) {
             try {
                 JSONObject jsonObjectAccuWeather = new JSONObject(json);
 

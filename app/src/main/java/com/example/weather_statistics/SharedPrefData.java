@@ -62,7 +62,7 @@ public class SharedPrefData {
         return sharedPrefSettingsAndData.getBoolean(KEY_FIRST_RUN, false);
     }
 
-    public static void saveLastDataDate(String lastDataDate){
+    public static void setLastDataDate(String lastDataDate){
         android.content.SharedPreferences.Editor editor = sharedPrefSettingsAndData.edit();
         editor.putString(KEY_LAST_DATA_DATE, lastDataDate);
         editor.apply();

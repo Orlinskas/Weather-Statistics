@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.weather_statistics.date.DatabaseAdapter;
 import com.example.weather_statistics.date.DatabaseHelper;
@@ -23,7 +22,7 @@ import java.util.Locale;
 
 public class ConnectionActivity extends AppCompatActivity {
     private ProgressBar progressBar;
-    private Button buttonGetApi;
+    private Button buttonConnection;
     private TextView tvTodayDate, tvLastDataDate, tvDataMessage;
     private LinearLayout linearLayoutConsole;
     private ScrollView scrollView;
@@ -43,7 +42,7 @@ public class ConnectionActivity extends AppCompatActivity {
         tvTodayDate = findViewById(R.id.activity_connection_tv_today_date);
         tvLastDataDate = findViewById(R.id.activity_connection_tv_last_data_date);
         tvDataMessage = findViewById(R.id.activity_connection_tv_data_message);
-        buttonGetApi =  findViewById(R.id.activity_connection_btn_get);
+        buttonConnection =  findViewById(R.id.activity_connection_btn_get);
         linearLayoutConsole = findViewById(R.id.activity_connection_ll_console);
         scrollView = findViewById(R.id.activity_connection_sv_console);
 
@@ -55,7 +54,7 @@ public class ConnectionActivity extends AppCompatActivity {
 
         database = new DatabaseAdapter(this);
 
-        buttonGetApi.setClickable(checkNeedDataUpdate());
+        buttonConnection.setClickable(checkNeedDataUpdate());
     }
 
     class ApiGetDataInsertAccuWeather extends AsyncTask <String, String, Void> {
@@ -76,7 +75,7 @@ public class ConnectionActivity extends AppCompatActivity {
                 weathers = parserAcuuWeather
                         .parse(requestSenderAccuWeather.requestWeather(locationID[countID]));
 
-                publishProgress("parse location - " + locationID[countID]);
+                publishProgress("parse location - " + Constants.getTownFromId(locationID[countID]));
 
                 for (Weather weather : weathers ){
                     database.open();
@@ -100,11 +99,12 @@ public class ConnectionActivity extends AppCompatActivity {
             super.onPostExecute(result);
             addTextViewInConsole("data collect completed(AccuWeather)");
             addTextViewInConsole("call another AsyncTask(OpenWeather)");
-            new ApiGetDataInsertOpenWeather().execute(Constants.OPENWEATHERMAP_KHARKIV_ID, Constants.OPENWEATHERMAP_MOSKOW_ID);
+            new ApiGetDataInsertOpenWeather().execute(Constants.OPENWEATHERMAP_KHARKIV_ID,
+                    Constants.OPENWEATHERMAP_MOSKOW_ID, Constants.OPENWEATHERMAP_LUBLIN_ID,
+                    Constants.OPENWEATHERMAP_VILNIUS_ID);
         }
 
     }
-
 
     class ApiGetDataInsertOpenWeather extends AsyncTask <String, String, Void>{
         ArrayList<Weather> weathers = new ArrayList<>();
@@ -125,7 +125,7 @@ public class ConnectionActivity extends AppCompatActivity {
                 weathers = parserOpenWeather
                         .parse(requestSenderOpenWeather.requestWeather(locationID[countID]));
 
-                publishProgress("parse location - " + locationID[countID]);
+                publishProgress("parse location - " + Constants.getTownFromId(locationID[countID]));
 
                 for (Weather weather : weathers ){
                     database.open();
@@ -151,12 +151,15 @@ public class ConnectionActivity extends AppCompatActivity {
             addTextViewInConsole("data collect completed(OpenWeather)");
             addTextViewInConsole("all data collection completed");
             setLastDataDate();
+            buttonConnection.setClickable(checkNeedDataUpdate());
         }
     }
 
     public void onClickConnection(View view) {
         addTextViewInConsole("click button");
-        new ApiGetDataInsertAccuWeather().execute(Constants.ACCUWEATHER_KHARKIV_ID);
+        new ApiGetDataInsertAccuWeather().execute(Constants.ACCUWEATHER_KHARKIV_ID,
+                Constants.ACCUWEATHER_VILNIUS_ID, Constants.ACCUWEATHER_MOSKOW_ID,
+                Constants.ACCUWEATHER_LUBLIN_ID);
     }
 
     public void addTextViewInConsole(String addedText){
@@ -203,7 +206,11 @@ public class ConnectionActivity extends AppCompatActivity {
             Weather lastOpenWeather = database.getWeather(countOpenWeather, DatabaseHelper.TABLE_OPEN_WEATHER);
             database.close();
             if (lastAccuWeather.getEffectiveDate().equals(lastOpenWeather.getEffectiveDate())){
-                tvLastDataDate.setText(lastAccuWeather.getEffectiveDate());
+                String effectiveDate = lastAccuWeather.getEffectiveDate();
+                StringBuilder stringBuffer = new StringBuilder(effectiveDate);
+                effectiveDate = stringBuffer.delete(10, lastAccuWeather.getEffectiveDate().length()).toString();
+                SharedPrefData.setLastDataDate(effectiveDate);
+                tvLastDataDate.setText(SharedPrefData.getLastDataDate());
             }
             else{
                 tvDataMessage.setText("error in data");

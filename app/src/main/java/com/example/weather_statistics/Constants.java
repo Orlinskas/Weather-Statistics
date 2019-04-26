@@ -22,6 +22,28 @@ public class Constants {
     public final static String OPENWEATHERMAP_VILNIUS_ID = "593116";
     public final static String OPENWEATHERMAP_CHECK = "http://api.openweathermap.org/data/2.5/forecast?id=706483&APPID=a39b0e16bbd652220c6c82560e6814a6&units=metric";
 
+    public final static String getTownFromId(String id){
 
+        switch (id){
+            case "323903":
+                return "Харьков";
+            case "706483":
+                return "Харьков";
+            case "294021":
+                return "Москва";
+            case "1220988":
+                return "Москва";
+            case "765876":
+                return "Люблин";
+            case "274231":
+                return "Люблин";
+            case "593116":
+                return "Вильнюс";
+            case "231459":
+                return "Вильнюс";
+            default:
+                return "errorTownId";
+        }
+    }
 
 }
