@@ -1,4 +1,4 @@
-package com.example.weather_statistics.date;
+package com.example.weather_research.date;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

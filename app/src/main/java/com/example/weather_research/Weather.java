@@ -1,4 +1,4 @@
-package com.example.weather_statistics;
+package com.example.weather_research;
 
 
 public class Weather {

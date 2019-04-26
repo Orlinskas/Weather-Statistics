@@ -1,4 +1,4 @@
-package com.example.weather_statistics;
+package com.example.weather_research;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -11,8 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.example.weather_statistics.date.DatabaseAdapter;
-import com.example.weather_statistics.date.DatabaseHelper;
+import com.example.weather_research.date.DatabaseAdapter;
+import com.example.weather_research.date.DatabaseHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -1,13 +1,13 @@
-package com.example.weather_statistics;
+package com.example.weather_research;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-public class DataActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data);
+        setContentView(R.layout.activity_settings);
     }
 }

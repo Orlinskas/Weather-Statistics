@@ -1,4 +1,4 @@
-package com.example.weather_statistics;
+package com.example.weather_research;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import android.telecom.Connection;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.weather_statistics.date.DatabaseAdapter;
-import com.example.weather_statistics.date.DatabaseHelper;
+import com.example.weather_research.date.DatabaseAdapter;
+import com.example.weather_research.date.DatabaseHelper;
 
 import java.util.ArrayList;
 

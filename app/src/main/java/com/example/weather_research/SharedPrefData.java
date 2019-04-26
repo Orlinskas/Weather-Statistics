@@ -1,4 +1,4 @@
-package com.example.weather_statistics;
+package com.example.weather_research;
 
 public class SharedPrefData {
     private static android.content.SharedPreferences sharedPrefSettingsAndData;

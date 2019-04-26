@@ -1,4 +1,4 @@
-package com.example.weather_statistics;
+package com.example.weather_research;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

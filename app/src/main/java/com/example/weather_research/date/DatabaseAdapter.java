@@ -1,4 +1,4 @@
-package com.example.weather_statistics.date;
+package com.example.weather_research.date;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.weather_statistics.Weather;
+import com.example.weather_research.Weather;
 
 import java.util.ArrayList;
 import java.util.List;

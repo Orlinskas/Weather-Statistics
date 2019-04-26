@@ -1,4 +1,4 @@
-package com.example.weather_statistics;
+package com.example.weather_research;
 
 public class Constants {
     public final static String COMMON_DATEDATA_FORMAT = "yyyy-MM-dd HH:00";
