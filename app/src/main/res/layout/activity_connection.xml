@@ -1,10 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    android:id="@+id/activity_connection_sv"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_connection_ll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
-</ScrollView>
+    <ProgressBar
+        android:id="@+id/activity_connection_pb"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Сегодня:"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/activity_connection_tv_today_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Последние данные"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/activity_connection_tv_last_data_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/activity_connection_tv_data_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/activity_connection_btn_get"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:onClick="onClickConnection"
+        android:text="Get and write data" />
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/activity_connection_sv_console"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:scrollbarSize="2dp"
+        android:scrollbarThumbVertical="@android:color/darker_gray">
+
+
+        <LinearLayout
+            android:id="@+id/activity_connection_ll_console"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_dark"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/activity_connection_tv_console"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Console:"
+                android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

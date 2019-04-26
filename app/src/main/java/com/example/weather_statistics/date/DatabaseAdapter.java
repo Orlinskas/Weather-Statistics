@@ -78,6 +78,22 @@ public class DatabaseAdapter {
         return DatabaseUtils.queryNumEntries(database, tableName);
     }
 
+    public Weather getWeather(long id, String tableName){
+        Weather weather = null;
+        String query = String.format("SELECT * FROM %s WHERE %s=?", tableName, DatabaseHelper.COLUMN_ID);
+        Cursor cursor = database.rawQuery(query, new String[]{ String.valueOf(id)});
+        if(cursor.moveToFirst()){
+            String effectiveDate = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_EFFECTIVE_DATE));
+            String date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DATE));
+            float temperature = cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.COLUMN_TEMPERATURE));
+            String location = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LOCATION));
+            String source = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_SOURCE));
+            weather = new Weather(effectiveDate, date, temperature, location, source);
+        }
+        cursor.close();
+        return  weather;
+    }
+
     public Weather getWeather(int id, String tableName){
         Weather weather = null;
         String query = String.format("SELECT * FROM %s WHERE %s=?", tableName, DatabaseHelper.COLUMN_ID);
