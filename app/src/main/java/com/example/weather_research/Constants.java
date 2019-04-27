@@ -22,24 +22,32 @@ public class Constants {
     public final static String OPENWEATHERMAP_VILNIUS_ID = "593116";
     public final static String OPENWEATHERMAP_CHECK = "http://api.openweathermap.org/data/2.5/forecast?id=706483&APPID=a39b0e16bbd652220c6c82560e6814a6&units=metric";
 
+    public static final String KEY_ERROR_BUNDLE = "error message";
+    public static final String KEY_LAST_ERROR_BUNDLE = "last error message";
+
+    public static final String ERROR_PARSE = "parsing error";
+    public static final String ERROR_CONNECTION = "internet connection error";
+    public static final String ERROR_BUILD = "build error";
+    public static final String ERROR_DATA = "data error";
+
     public final static String getTownFromId(String id){
 
         switch (id){
-            case "323903":
+            case ACCUWEATHER_KHARKIV_ID:
                 return "Харьков";
-            case "706483":
+            case OPENWEATHERMAP_KHARKIV_ID:
                 return "Харьков";
-            case "294021":
+            case OPENWEATHERMAP_MOSKOW_ID:
                 return "Москва";
-            case "1220988":
+            case ACCUWEATHER_MOSKOW_ID:
                 return "Москва";
-            case "765876":
+            case OPENWEATHERMAP_LUBLIN_ID:
                 return "Люблин";
-            case "274231":
+            case ACCUWEATHER_LUBLIN_ID:
                 return "Люблин";
-            case "593116":
+            case OPENWEATHERMAP_VILNIUS_ID:
                 return "Вильнюс";
-            case "231459":
+            case ACCUWEATHER_VILNIUS_ID:
                 return "Вильнюс";
             default:
                 return "errorTownId";

@@ -6,6 +6,7 @@ public class SharedPrefData {
     public static final String SETTINGS_AND_DATA = "settingsAndData";
     public static final String KEY_FIRST_RUN = "firstRun";
     public static final String KEY_LAST_DATA_DATE = "lastDataDate";
+    public static final String KEY_LAST_ERROR_TEXT = "lastErrorText";
 
     public static final String KEY_MORNING_EXERCISE = "morningExercise";
     public static final String KEY_SECOND_EXERCISE = "secondExercise";
@@ -70,5 +71,15 @@ public class SharedPrefData {
 
     public static String getLastDataDate(){
         return sharedPrefSettingsAndData.getString(KEY_LAST_DATA_DATE, "-");
+    }
+
+    public static void setLastErrorText(String lastDataDate){
+        android.content.SharedPreferences.Editor editor = sharedPrefSettingsAndData.edit();
+        editor.putString(KEY_LAST_ERROR_TEXT, lastDataDate);
+        editor.apply();
+    }
+
+    public static String getLastErrorText(){
+        return sharedPrefSettingsAndData.getString(KEY_LAST_ERROR_TEXT, "not error message");
     }
 }

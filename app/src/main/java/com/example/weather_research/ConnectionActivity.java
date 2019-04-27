@@ -1,5 +1,7 @@
 package com.example.weather_research;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -55,6 +57,12 @@ public class ConnectionActivity extends AppCompatActivity {
         database = new DatabaseAdapter(this);
 
         buttonConnection.setClickable(checkNeedDataUpdate());
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.KEY_LAST_ERROR_BUNDLE, SharedPrefData.getLastErrorText());
+        GlobalConsoleFragment consoleFragment = new GlobalConsoleFragment();
+        consoleFragment.setArguments(bundle);
+
     }
 
     class ApiGetDataInsertAccuWeather extends AsyncTask <String, String, Void> {
@@ -158,8 +166,8 @@ public class ConnectionActivity extends AppCompatActivity {
     public void onClickConnection(View view) {
         addTextViewInConsole("click button");
         new ApiGetDataInsertAccuWeather().execute(Constants.ACCUWEATHER_KHARKIV_ID,
-                Constants.ACCUWEATHER_VILNIUS_ID, Constants.ACCUWEATHER_MOSKOW_ID,
-                Constants.ACCUWEATHER_LUBLIN_ID);
+                Constants.ACCUWEATHER_LUBLIN_ID, Constants.ACCUWEATHER_MOSKOW_ID,
+                Constants.ACCUWEATHER_VILNIUS_ID);
     }
 
     public void addTextViewInConsole(String addedText){

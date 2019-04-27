@@ -91,4 +91,11 @@
         </LinearLayout>
     </ScrollView>
 
+    <fragment
+        android:id="@+id/fragment_global_console"
+        android:name="com.example.weather_research.GlobalConsoleFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
+
 </LinearLayout>
