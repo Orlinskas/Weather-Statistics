@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_connection_ll"
     android:layout_width="match_parent"
@@ -65,15 +64,29 @@
         android:onClick="onClickConnection"
         android:text="Get and write data" />
 
+    <fragment
+        android:id="@+id/activity_connection_fragment"
+        android:name="com.example.weather_research.GlobalConsoleFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
+
+
+    <TextView
+        android:id="@+id/activity_connection_tv_console"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Console:"
+        android:textColor="@android:color/darker_gray"
+        android:background="@android:color/background_dark"/>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/activity_connection_sv_console"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="0dp"
         android:scrollbarSize="2dp"
         android:scrollbarThumbVertical="@android:color/darker_gray">
-
 
         <LinearLayout
             android:id="@+id/activity_connection_ll_console"
@@ -82,20 +95,7 @@
             android:background="@android:color/background_dark"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/activity_connection_tv_console"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Console:"
-                android:textColor="@android:color/darker_gray" />
         </LinearLayout>
     </ScrollView>
-
-    <fragment
-        android:id="@+id/fragment_global_console"
-        android:name="com.example.weather_research.GlobalConsoleFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
 
 </LinearLayout>

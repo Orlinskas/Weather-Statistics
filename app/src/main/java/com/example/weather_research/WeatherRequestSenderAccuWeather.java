@@ -2,6 +2,8 @@ package com.example.weather_research;
 
 import android.net.Uri;
 
+import com.example.weather_research.date.DatabaseAdapter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -10,6 +12,8 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class WeatherRequestSenderAccuWeather implements WeatherRequestSenderInterface {
+
+    private DatabaseAdapter database = new DatabaseAdapter(AppContext.getContext());
 
     @Override
     public String requestWeather(String locationID) {
@@ -30,6 +34,9 @@ public class WeatherRequestSenderAccuWeather implements WeatherRequestSenderInte
             }
         } catch (IOException e) {
             e.printStackTrace();
+            database.open();
+            database.insertLastErrorText(Constants.ERROR_CONNECTION, getClass());
+            database.close();
         } finally {
             httpURLConnection.disconnect();
         }
@@ -50,6 +57,10 @@ public class WeatherRequestSenderAccuWeather implements WeatherRequestSenderInte
             requestAccuWeather = new URL(buildRequest.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            DatabaseAdapter database = new DatabaseAdapter(AppContext.getContext());
+            database.open();
+            database.insertLastErrorText(Constants.ERROR_URL, WeatherRequestSenderAccuWeather.class);
+            database.close();
         }
 
         return requestAccuWeather;

@@ -8,12 +8,6 @@ public class SharedPrefData {
     public static final String KEY_LAST_DATA_DATE = "lastDataDate";
     public static final String KEY_LAST_ERROR_TEXT = "lastErrorText";
 
-    public static final String KEY_MORNING_EXERCISE = "morningExercise";
-    public static final String KEY_SECOND_EXERCISE = "secondExercise";
-    public static final String KEY_HOURS_SECOND_EXERCISE = "hoursSecondExercise";
-    public static final String KEY_MIN_SECOND_EXERCISE = "minSecondExercise";
-    public static final String KEY_NUMBER_LANGUAGE = "languageNameNumber";
-
     public static void setSharedPrefSettingsAndData(android.content.SharedPreferences sharedPrefSettingsAndData) {
         SharedPrefData.sharedPrefSettingsAndData = sharedPrefSettingsAndData;
 
@@ -80,6 +74,6 @@ public class SharedPrefData {
     }
 
     public static String getLastErrorText(){
-        return sharedPrefSettingsAndData.getString(KEY_LAST_ERROR_TEXT, "not error message");
+        return sharedPrefSettingsAndData.getString(KEY_LAST_ERROR_TEXT, Constants.ERROR_NULL);
     }
 }

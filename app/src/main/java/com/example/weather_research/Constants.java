@@ -1,8 +1,8 @@
 package com.example.weather_research;
 
 public class Constants {
+
     public final static String COMMON_DATEDATA_FORMAT = "yyyy-MM-dd HH:00";
-    public final static String ERROR = "error";
 
     public final static String ACCUWEATHER_COM = "https://dataservice.accuweather.com/";
     public final static String ACCUWEATHER_FORECAST_5day = "forecasts/v1/daily/5day/";
@@ -22,13 +22,15 @@ public class Constants {
     public final static String OPENWEATHERMAP_VILNIUS_ID = "593116";
     public final static String OPENWEATHERMAP_CHECK = "http://api.openweathermap.org/data/2.5/forecast?id=706483&APPID=a39b0e16bbd652220c6c82560e6814a6&units=metric";
 
-    public static final String KEY_ERROR_BUNDLE = "error message";
-    public static final String KEY_LAST_ERROR_BUNDLE = "last error message";
-
     public static final String ERROR_PARSE = "parsing error";
     public static final String ERROR_CONNECTION = "internet connection error";
-    public static final String ERROR_BUILD = "build error";
+    public static final String ERROR_SET = "set variable error";
     public static final String ERROR_DATA = "data error";
+    public static final String ERROR_JSON = "json error";
+    public static final String ERROR_URL = "url error";
+    public static final String ERROR_ACTIVITY = "activity error";
+    public final static String ERROR = "error";
+    public static final String ERROR_NULL = "not error message";
 
     public final static String getTownFromId(String id){
 

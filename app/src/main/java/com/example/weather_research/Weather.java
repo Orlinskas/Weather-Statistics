@@ -8,7 +8,6 @@ public class Weather {
     private String location;
     private String source;
 
-
     public Weather(String effectiveDate, String date, float temperature, String location, String source){
         this.effectiveDate = effectiveDate;
         this.date = date;

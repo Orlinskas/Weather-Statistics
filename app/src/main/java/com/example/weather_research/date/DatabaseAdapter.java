@@ -8,8 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.weather_research.Weather;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DatabaseAdapter {
     private DatabaseHelper dbHelper;
@@ -92,6 +95,26 @@ public class DatabaseAdapter {
         }
         cursor.close();
         return  weather;
+    }
+
+    public String getErrorText(long id){
+        String errorText = null;
+        String query = String.format("SELECT * FROM %s WHERE %s=?", DatabaseHelper.TABLE_ERROR_MESSAGES, DatabaseHelper.COLUMN_ID);
+        Cursor cursor = database.rawQuery(query, new String[]{ String.valueOf(id)});
+        if(cursor.moveToFirst()){
+           errorText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_ERROR_TEXT));
+        }
+        cursor.close();
+        return  errorText;
+    }
+
+    public long insertLastErrorText(String errorMessage, Class c){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+
+        String finalMessage = errorMessage + "-" + c.getName() + "-" + dateFormat.format(new Date());
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseHelper.COLUMN_ERROR_TEXT, finalMessage);
+        return  database.insert(DatabaseHelper.TABLE_ERROR_MESSAGES, null, cv);
     }
 
     public Weather getWeather(int id, String tableName){

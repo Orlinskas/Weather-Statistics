@@ -1,10 +1,9 @@
 package com.example.weather_research;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -29,14 +28,13 @@ public class ConnectionActivity extends AppCompatActivity {
     private LinearLayout linearLayoutConsole;
     private ScrollView scrollView;
 
+    private SimpleDateFormat todayFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    private String todayDate = todayFormat.format(new Date());
 
-    SimpleDateFormat todayFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-    String todayDate = todayFormat.format(new Date());
-
-    DatabaseAdapter database;
+    private DatabaseAdapter database;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
 
@@ -58,11 +56,9 @@ public class ConnectionActivity extends AppCompatActivity {
 
         buttonConnection.setClickable(checkNeedDataUpdate());
 
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.KEY_LAST_ERROR_BUNDLE, SharedPrefData.getLastErrorText());
-        GlobalConsoleFragment consoleFragment = new GlobalConsoleFragment();
-        consoleFragment.setArguments(bundle);
+        setMessageInGlobalConsole();
 
+        AppContext.setContext(this);
     }
 
     class ApiGetDataInsertAccuWeather extends AsyncTask <String, String, Void> {
@@ -127,9 +123,8 @@ public class ConnectionActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... locationID) {
             publishProgress("start collect data(OpenWeather)");
-            int countID;
 
-            for (countID = 0; countID < locationID.length; countID++){
+            for (int countID = 0; countID < locationID.length; countID++){
                 weathers = parserOpenWeather
                         .parse(requestSenderOpenWeather.requestWeather(locationID[countID]));
 
@@ -168,6 +163,8 @@ public class ConnectionActivity extends AppCompatActivity {
         new ApiGetDataInsertAccuWeather().execute(Constants.ACCUWEATHER_KHARKIV_ID,
                 Constants.ACCUWEATHER_LUBLIN_ID, Constants.ACCUWEATHER_MOSKOW_ID,
                 Constants.ACCUWEATHER_VILNIUS_ID);
+
+        SharedPrefData.setTrueFirstRun();
     }
 
     public void addTextViewInConsole(String addedText){
@@ -222,8 +219,32 @@ public class ConnectionActivity extends AppCompatActivity {
             }
             else{
                 tvDataMessage.setText("error in data");
+                database.open();
+                database.insertLastErrorText(Constants.ERROR_DATA, getClass());
+                database.close();
             }
         }
 
+    }
+
+    private void setMessageInGlobalConsole(){
+        GlobalConsoleFragment consoleFragment = (GlobalConsoleFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.activity_connection_fragment);
+
+        if(SharedPrefData.getFirstRun()){
+            database.open();
+            long id = database.getCount(DatabaseHelper.TABLE_ERROR_MESSAGES);
+            if (consoleFragment != null) {
+                consoleFragment.setTvLastErrorText(database.getErrorText(id));
+            }
+            else database.insertLastErrorText(Constants.ERROR_ACTIVITY, getClass());
+            database.close();
+        }
+        else {
+            if (consoleFragment != null) {
+                consoleFragment.setTvLastErrorText("Welcome to app, error stack empty");
+            }
+            else database.insertLastErrorText(Constants.ERROR_ACTIVITY, getClass());
+        }
     }
 }

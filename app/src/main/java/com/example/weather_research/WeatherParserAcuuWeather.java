@@ -1,5 +1,7 @@
 package com.example.weather_research;
 
+import com.example.weather_research.date.DatabaseAdapter;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,17 +15,19 @@ import java.util.Locale;
 
 public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInterface {
 
+    private DatabaseAdapter database = new DatabaseAdapter(AppContext.getContext());
+
     @Override
     public ArrayList<Weather> parse(String json){
         ArrayList<Weather> weathers = new ArrayList<>();
 
         SimpleDateFormat commonFormat = new SimpleDateFormat(Constants.COMMON_DATEDATA_FORMAT, Locale.ENGLISH);
         String effectiveDate = commonFormat.format(new Date());
-        String date;
-        String temperatureMin;
-        String temperatureMax;
-        String sourse;
-        String link;
+        String date = null;
+        String temperatureMin = null;
+        String temperatureMax = null;
+        String sourse = null;
+        String link = null;
 
         for(int index = 0; index <= 4; index++ ) {
             try {
@@ -53,18 +57,14 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                date = Constants.ERROR;
-                temperatureMin = Constants.ERROR;
-                temperatureMax = Constants.ERROR;
-                sourse = Constants.ERROR;
-                link = Constants.ERROR;
+                database.open();
+                database.insertLastErrorText(Constants.ERROR_JSON, getClass());
+                database.close();
             } catch (ParseException e) {
                 e.printStackTrace();
-                date = Constants.ERROR;
-                temperatureMin = Constants.ERROR;
-                temperatureMax = Constants.ERROR;
-                sourse = Constants.ERROR;
-                link = Constants.ERROR;
+                database.open();
+                database.insertLastErrorText(Constants.ERROR_PARSE, getClass());
+                database.close();
             }
 
             Weather weather = new Weather();
@@ -77,10 +77,12 @@ public class WeatherParserAcuuWeather implements WeatherSourceResponseParseInter
             }
             else {
                 weather.setLocation(Constants.ERROR);
+                database.open();
+                database.insertLastErrorText(Constants.ERROR_SET, getClass());
+                database.close();
             }
             weathers.add(weather);
         }
-
         return weathers;
     }
 

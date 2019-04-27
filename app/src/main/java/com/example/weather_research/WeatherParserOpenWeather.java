@@ -1,5 +1,7 @@
 package com.example.weather_research;
 
+import com.example.weather_research.date.DatabaseAdapter;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,16 +15,18 @@ import java.util.Locale;
 
 public class WeatherParserOpenWeather implements WeatherSourceResponseParseInterface {
 
+    private DatabaseAdapter database = new DatabaseAdapter(AppContext.getContext());
+
     @Override
     public ArrayList<Weather> parse(String json){
         ArrayList<Weather> weathers = new ArrayList<>();
 
         SimpleDateFormat commonFormat = new SimpleDateFormat(Constants.COMMON_DATEDATA_FORMAT, Locale.ENGLISH);
         String effectiveDate = commonFormat.format(new Date());
-        String date;
-        String temperature;
+        String date = null;
+        String temperature = null;
         String sourse = "OpenWeatherMap";
-        String location;
+        String location = null;
 
         for (int index = 0; index <= 39; index++){
             try {
@@ -43,16 +47,14 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                date = Constants.ERROR;
-                temperature = Constants.ERROR;
-                sourse = Constants.ERROR;
-                location = Constants.ERROR;
+                database.open();
+                database.insertLastErrorText(Constants.ERROR_JSON, getClass());
+                database.close();
             } catch (ParseException e) {
                 e.printStackTrace();
-                date = Constants.ERROR;
-                temperature = Constants.ERROR;
-                sourse = Constants.ERROR;
-                location = Constants.ERROR;
+                database.open();
+                database.insertLastErrorText(Constants.ERROR_PARSE, getClass());
+                database.close();
             }
 
             Weather weather = new Weather();
@@ -63,12 +65,14 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
             }
             else {
                 weather.setTemperature(0.0f);
+                database.open();
+                database.insertLastErrorText(Constants.ERROR_SET, getClass());
+                database.close();
             }
             weather.setSource(sourse);
             weather.setLocation(location);
             weathers.add(weather);
         }
-
         return weathers;
     }
 }

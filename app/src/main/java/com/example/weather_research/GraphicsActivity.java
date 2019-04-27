@@ -49,6 +49,7 @@ public class GraphicsActivity extends AppCompatActivity {
         progressBarHorizontal = findViewById(R.id.progressBar2);
         progressBarHorizontal.setMax(100);
         database = new DatabaseAdapter(this);
+
     }
 
     @Override

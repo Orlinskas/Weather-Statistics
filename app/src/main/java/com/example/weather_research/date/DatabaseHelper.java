@@ -10,12 +10,14 @@ public class DatabaseHelper extends SQLiteOpenHelper  {
 
     public static final String TABLE_OPEN_WEATHER = "OpenWeather";
     public static final String TABLE_ACCU_WEATHER = "AccuWeather";
+    public static final String TABLE_ERROR_MESSAGES = "ErrorMessages";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_EFFECTIVE_DATE = "effectiveData";
     public static final String COLUMN_DATE = "data";
     public static final String COLUMN_TEMPERATURE = "temperature";
     public static final String COLUMN_LOCATION = "location";
     public static final String COLUMN_SOURCE = "source";
+    public static final String COLUMN_ERROR_TEXT = "text";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,14 +41,20 @@ public class DatabaseHelper extends SQLiteOpenHelper  {
                 + COLUMN_LOCATION + " TEXT NOT NULL, "
                 + COLUMN_SOURCE + " TEXT NOT NULL );";
 
+        String SQL_CREATE_TABLE_ERROR_MESSAGES = "CREATE TABLE " + TABLE_ERROR_MESSAGES + " ("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_ERROR_TEXT + " TEXT NOT NULL );";
+
         db.execSQL(SQL_CREATE_TABLE_OPEN_WEATHER);
         db.execSQL(SQL_CREATE_TABLE_ACCU_WEATHER);
+        db.execSQL(SQL_CREATE_TABLE_ERROR_MESSAGES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_OPEN_WEATHER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACCU_WEATHER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ERROR_MESSAGES);
         onCreate(db);
     }
 }
