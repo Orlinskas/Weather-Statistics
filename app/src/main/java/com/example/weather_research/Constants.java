@@ -32,6 +32,10 @@ public class Constants {
     public final static String ERROR = "error";
     public static final String ERROR_NULL = "not error message";
 
+    public static final String MESSAGE_SOME_DATA_EMPTY = "data - empty";
+
+    public static final int IDD_DELETE = 0;
+
     public final static String getTownFromId(String id){
 
         switch (id){

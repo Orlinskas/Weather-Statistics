@@ -9,7 +9,8 @@
     <string name="action_data">База данных</string>
     <string name="action_settings">Настройки</string>
     <string name="action_help">Помощь</string>
-
+    <string name="need_data_update">Нужно обновить данные, в 12–13 часов</string>
+    <string name="dont_need_data_update_do_tomorow">Данные соответствуют, обновите завтра</string>
 
 
 </resources>

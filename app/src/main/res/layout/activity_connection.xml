@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_connection_ll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -55,14 +56,32 @@
         android:layout_gravity="center"
         android:textSize="12sp" />
 
-    <Button
-        android:id="@+id/activity_connection_btn_get"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:onClick="onClickConnection"
-        android:text="Get and write data" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       >
+
+        <Button
+            android:id="@+id/activity_connection_btn_get"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClickConnection"
+            android:text="Get and write data" />
+
+        <Button
+            android:id="@+id/activity_connection_btn_delete_all_from_last_effectiveDate"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="4dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/baseline_delete_sweep_black_18dp"
+            android:onClick="onClickDeleteAllFromLastEffectiveDate" />
+    </RelativeLayout>
 
     <fragment
         android:id="@+id/activity_connection_fragment"

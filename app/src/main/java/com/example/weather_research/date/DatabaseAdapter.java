@@ -37,7 +37,7 @@ public class DatabaseAdapter {
         return  database.query(tableName, columns, null, null, null, null, null);
     }
 
-    public List<Weather> getWeathers(String tableName){
+    public ArrayList<Weather> getWeathers(String tableName){
         ArrayList<Weather> weathers = new ArrayList<>();
         Cursor cursor = getAllEntries(tableName);
         if(cursor.moveToFirst()){
@@ -77,6 +77,24 @@ public class DatabaseAdapter {
         return  weathers;
     }
 
+    public ArrayList<Integer> getWeathersIdWithEffectiveDate(String needEffectiveDate, String tableName){
+        ArrayList<Integer> weathersID = new ArrayList<>();
+        Cursor cursor = getAllEntries(tableName);
+        if(cursor.moveToFirst()){
+            do{
+                int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
+                String effectiveDate = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_EFFECTIVE_DATE));
+
+                if(effectiveDate.equals(needEffectiveDate)) {
+                    weathersID.add(id);
+                }
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        return  weathersID;
+    }
+
     public long getCount(String tableName){
         return DatabaseUtils.queryNumEntries(database, tableName);
     }
@@ -108,13 +126,13 @@ public class DatabaseAdapter {
         return  errorText;
     }
 
-    public long insertLastErrorText(String errorMessage, Class c){
+    public void insertLastErrorText(String errorMessage, Class c){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 
         String finalMessage = errorMessage + "-" + c.getName() + "-" + dateFormat.format(new Date());
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_ERROR_TEXT, finalMessage);
-        return  database.insert(DatabaseHelper.TABLE_ERROR_MESSAGES, null, cv);
+        database.insert(DatabaseHelper.TABLE_ERROR_MESSAGES, null, cv);
     }
 
     public Weather getWeather(int id, String tableName){
