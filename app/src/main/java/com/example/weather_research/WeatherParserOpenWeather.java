@@ -21,7 +21,7 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
     public ArrayList<Weather> parse(String json){
         ArrayList<Weather> weathers = new ArrayList<>();
 
-        SimpleDateFormat commonFormat = new SimpleDateFormat(Constants.COMMON_DATEDATA_FORMAT, Locale.ENGLISH);
+        SimpleDateFormat commonFormat = new SimpleDateFormat(Constants.YYYY_MM_DD_HH_00, Locale.ENGLISH);
         String effectiveDate = commonFormat.format(new Date());
         String date = null;
         String temperature = null;

@@ -2,7 +2,8 @@ package com.example.weather_research;
 
 public class Constants {
 
-    public final static String COMMON_DATEDATA_FORMAT = "yyyy-MM-dd HH:00";
+    public final static String YYYY_MM_DD_HH_00 = "yyyy-MM-dd HH:00";
+    public final static String YYYY_MM_DD = "yyyy-MM-dd";
 
     public final static String ACCUWEATHER_COM = "https://dataservice.accuweather.com/";
     public final static String ACCUWEATHER_FORECAST_5day = "forecasts/v1/daily/5day/";
