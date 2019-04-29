@@ -18,9 +18,11 @@ import android.widget.TextView;
 import com.example.weather_research.date.DatabaseAdapter;
 import com.example.weather_research.date.DatabaseHelper;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
@@ -55,56 +57,89 @@ public class ConnectionActivity extends AppCompatActivity {
 
         database = new DatabaseAdapter(this);
 
-        SharedPrefData.setSharedPrefSettingsAndData(getSharedPreferences(SharedPrefData.SETTINGS_AND_DATA, MODE_PRIVATE));
-        tvLastDataDate.setText(searchLastConnectionDate(Constants.YYYY_MM_DD));
+        tvLastDataDate.setText(searchLastEffectiveDateInAllTables(Constants.TABLENAMES));
 
         buttonConnection.setClickable(checkNeedDataUpdate());
 
-        setMessageInGlobalConsole();
+        SharedPrefData.setSharedPrefSettingsAndData(getSharedPreferences(SharedPrefData.SETTINGS_AND_DATA, MODE_PRIVATE));
+
+        if(!SharedPrefData.getFirstRun()){
+            firstRun();
+        }
+
+        SharedPrefData.setTrueFirstRun();
+
+        showLastErrorInGlobalConsole();
 
         AppContext.setContext(this);
     }
 
-    public String searchLastConnectionDate(String format){
-        ArrayList<Weather> weathers;
+    public String searchLastEffectiveDateInAllTables(String[] tableName){
+        String [] effectiveDates = new String[tableName.length];
+        DateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        DateFormat returnFormat = new SimpleDateFormat(Constants.YYYY_MM_DD_HH_00);
+        ArrayList <Date>  dates = new ArrayList<>();
+        Date lastBiggerDate;
 
-        switch (format){
-            case Constants.YYYY_MM_DD:
+        try {
+            for (int i = 0; i < tableName.length; i++){ //получаем массив последних дат из всех таблиц
                 try {
                     database.open();
-                    weathers = database.getWeathers(DatabaseHelper.TABLE_OPEN_WEATHER);
+                    ArrayList <Integer> weathersIds = database.getWeathersIds(tableName[i]);
+                    int lastId = Collections.max(weathersIds);
+                    Weather lastWeather = database.getWeather(lastId, tableName[i]);
                     database.close();
-                    String lastConnectionDate = weathers.get(weathers.size() - 1).getEffectiveDate();
-                    StringBuilder stringBuffer = new StringBuilder(lastConnectionDate);
-                    return stringBuffer.delete(10, lastConnectionDate.length()).toString();
+                    effectiveDates[i] = lastWeather.getEffectiveDate();
                 }
                 catch (Exception e){
-                    return Constants.ERROR_DATA;
+                    effectiveDates[i] = "1996-01-22 14:00";
                 }
+            }
 
-            case Constants.YYYY_MM_DD_HH_00:
-                try {
-                    database.open();
-                    weathers = database.getWeathers(DatabaseHelper.TABLE_OPEN_WEATHER);
-                    database.close();
-                    return weathers.get(weathers.size() - 1).getEffectiveDate();
+            for (String date : effectiveDates){ //делаем их датами что бы сравнить
+                dates.add(parseFormat.parse(date));
+            }
+
+            long max = dates.get(0).getTime();
+
+            for (Date date : dates){ //сравниваем и получаем самую большую дату в мс
+                if (date.getTime() > max){
+                    max = date.getTime();
                 }
-                catch (Exception e){
-                    return Constants.ERROR_DATA;
-                }
-            default:
-                return Constants.ERROR_DATA;
+            }
+
+            lastBiggerDate = new Date(max);
+
         }
+        catch (Exception e){
+            return Constants.ERROR_DATA_EMPTY;
+        }
+
+        return returnFormat.format(lastBiggerDate);
     }
 
     public boolean checkNeedDataUpdate(){
-        if (!tvLastDataDate.getText().equals(tvTodayDate.getText())) {
-            tvDataMessage.setText(getString(R.string.need_data_update));
-            return true;
-        } else {
+        String lastDataUpdate = searchLastEffectiveDateInAllTables(Constants.TABLENAMES);
+        StringBuilder stringBuffer = new StringBuilder(lastDataUpdate);
+        lastDataUpdate = stringBuffer.delete(10, lastDataUpdate.length()).toString();
+        String todayDate = tvTodayDate.getText().toString();
+
+        if (todayDate.equals(lastDataUpdate)) {
             tvDataMessage.setText(getString(R.string.dont_need_data_update_do_tomorow));
             return false;
+        } else {
+            tvDataMessage.setText(getString(R.string.need_data_update));
+            return true;
         }
+    }
+
+    public void firstRun() {
+        //приложение имеет таблицу данных со всеми ошибками, установим при первом запуске первую
+        //ошибку в виде приветствия
+        database.open();
+        database.insertLastErrorText("Welcome to app, error stack empty\n", getClass());
+        database.close();
+
     }
 
     public void onClickConnection(View view) {
@@ -112,25 +147,26 @@ public class ConnectionActivity extends AppCompatActivity {
         new ApiGetDataInsertAccuWeather().execute(Constants.ACCUWEATHER_KHARKIV_ID,
                 Constants.ACCUWEATHER_LUBLIN_ID, Constants.ACCUWEATHER_MOSKOW_ID,
                 Constants.ACCUWEATHER_VILNIUS_ID);
-
-        SharedPrefData.setTrueFirstRun();
     }
 
-    private void setMessageInGlobalConsole() {
+    public void showLastErrorInGlobalConsole() {
         GlobalConsoleFragment consoleFragment = (GlobalConsoleFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.activity_connection_fragment);
 
-        if (SharedPrefData.getFirstRun()) {
+        try {
             database.open();
             long id = database.getCount(DatabaseHelper.TABLE_ERROR_MESSAGES);
             if (consoleFragment != null) {
                 consoleFragment.setTvLastErrorText(database.getErrorText(id));
-            } else database.insertLastErrorText(Constants.ERROR_ACTIVITY, getClass());
+            }
+            else {
+                database.insertLastErrorText(Constants.ERROR_DATA, getClass());
+            }
             database.close();
-        } else {
-            if (consoleFragment != null) {
-                consoleFragment.setTvLastErrorText("Welcome to app, error stack empty");
-            } else database.insertLastErrorText(Constants.ERROR_ACTIVITY, getClass());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            database.insertLastErrorText(Constants.ERROR_DATA, getClass());
         }
     }
 
@@ -160,12 +196,12 @@ public class ConnectionActivity extends AppCompatActivity {
         switch (id) {
             case Constants.IDD_DELETE:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Вы уверены, что хотите удалить данные за - " + searchLastConnectionDate(Constants.YYYY_MM_DD_HH_00))
+                builder.setMessage("Вы уверены, что хотите удалить последние полученные данные? ")
                         .setPositiveButton("Да",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         new DeleteAllDataWithEffectiveDate()
-                                                .execute(searchLastConnectionDate(Constants.YYYY_MM_DD_HH_00));
+                                                .execute(searchLastEffectiveDateInAllTables(Constants.TABLENAMES));
                                         dialog.cancel();
                                     }
                                 })
@@ -183,7 +219,7 @@ public class ConnectionActivity extends AppCompatActivity {
     }
 
     class DeleteAllDataWithEffectiveDate extends AsyncTask<String, String, Void> {
-        ArrayList<Integer> weathersId = new ArrayList<>();
+        ArrayList<Integer> weathersIds = new ArrayList<>();
 
         @Override
         protected void onPreExecute() {
@@ -194,36 +230,49 @@ public class ConnectionActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(String... effectiveDate) {
-            publishProgress("start delete data(AccuWeather)");
-            database.open();
-            weathersId = database.getWeathersIdWithEffectiveDate(effectiveDate[0], DatabaseHelper.TABLE_ACCU_WEATHER);
-            database.close();
-
-            for (Integer countID : weathersId) {
-               database.open();
-               database.delete(countID, DatabaseHelper.TABLE_ACCU_WEATHER);
-               database.close();
-
-               publishProgress("delete - " + countID.toString() + " id element");
-            }
-            publishProgress("data delete completed(AccuWeather)");
-            publishProgress("deleted " + weathersId.size() + " elements (AccuWeather)");
-
-            //Начинается удаление из другой таблицы
-            publishProgress("start delete data(OpenWeather)");
-            database.open();
-            weathersId = database.getWeathersIdWithEffectiveDate(effectiveDate[0], DatabaseHelper.TABLE_OPEN_WEATHER);
-            database.close();
-
-            for (Integer countID : weathersId) {
+            try {
+                publishProgress("start delete data(AccuWeather)");
                 database.open();
-                database.delete(countID, DatabaseHelper.TABLE_OPEN_WEATHER);
+                weathersIds = database.getWeathersIds(effectiveDate[0], DatabaseHelper.TABLE_ACCU_WEATHER);
                 database.close();
 
-                publishProgress("delete - " + countID.toString() + " id element");
+                for (Integer countID : weathersIds) {
+                   database.open();
+                   database.delete(countID, DatabaseHelper.TABLE_ACCU_WEATHER);
+                   database.close();
+
+                   publishProgress("delete - " + countID.toString() + " id element");
+                }
+                publishProgress("data delete completed(AccuWeather)");
+                publishProgress("deleted " + weathersIds.size() + " elements (AccuWeather)");
+            } catch (Exception e) {
+                database.open();
+                database.insertLastErrorText(Constants.ERROR_THREAD, getClass());
+                database.close();
             }
-            publishProgress("data delete completed(OpenWeather)");
-            publishProgress("deleted " + weathersId.size() + " elements (OpenWeather)");
+
+            //Начинается удаление из другой таблицы
+
+            try {
+                publishProgress("start delete data(OpenWeather)");
+                database.open();
+                weathersIds = database.getWeathersIds(effectiveDate[0], DatabaseHelper.TABLE_OPEN_WEATHER);
+                database.close();
+
+                for (Integer countID : weathersIds) {
+                    database.open();
+                    database.delete(countID, DatabaseHelper.TABLE_OPEN_WEATHER);
+                    database.close();
+
+                    publishProgress("delete - " + countID.toString() + " id element");
+                }
+                publishProgress("data delete completed(OpenWeather)");
+                publishProgress("deleted " + weathersIds.size() + " elements (OpenWeather)");
+            } catch (Exception e) {
+                database.open();
+                database.insertLastErrorText(Constants.ERROR_THREAD, getClass());
+                database.close();
+            }
             return null;
         }
 
@@ -239,6 +288,8 @@ public class ConnectionActivity extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
             addTextViewInConsole("all data delete completed");
             buttonDeleter.setClickable(true);
+            tvLastDataDate.setText(searchLastEffectiveDateInAllTables(Constants.TABLENAMES));
+            buttonConnection.setClickable(checkNeedDataUpdate());
         }
     }
 
@@ -256,20 +307,30 @@ public class ConnectionActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(String... locationID) {
-            publishProgress("start collect data(AccuWeather)");
-            for (String aLocationID : locationID) {
-                weathers = parserAcuuWeather
-                        .parse(requestSenderAccuWeather.requestWeather(aLocationID));
+            try {
+                publishProgress("start collect data(AccuWeather)");
 
-                publishProgress("parse location - " + Constants.getTownFromId(aLocationID));
+                for (String aLocationID : locationID) {
+                    weathers = parserAcuuWeather
+                            .parse(requestSenderAccuWeather.requestWeather(aLocationID));
 
-                for (Weather weather : weathers) {
-                    database.open();
-                    database.insert(weather, DatabaseHelper.TABLE_ACCU_WEATHER);
-                    database.close();
+                    publishProgress("parse location - " + Constants.getTownFromId(aLocationID));
 
-                    publishProgress("write in data base id- " + weathers.indexOf(weather));
+                    for (Weather weather : weathers) {
+                        database.open();
+                        database.insert(weather, DatabaseHelper.TABLE_ACCU_WEATHER);
+                        database.close();
+
+                        publishProgress("write in data base id- " + weathers.indexOf(weather));
+                    }
                 }
+            } catch (Exception e) {
+                database.open();
+                database.insertLastErrorText(Constants.ERROR_THREAD, getClass());
+                database.close();
+                new ApiGetDataInsertOpenWeather().execute(Constants.OPENWEATHERMAP_KHARKIV_ID,
+                        Constants.OPENWEATHERMAP_MOSKOW_ID, Constants.OPENWEATHERMAP_LUBLIN_ID,
+                        Constants.OPENWEATHERMAP_VILNIUS_ID);
             }
             return null;
         }
@@ -306,21 +367,27 @@ public class ConnectionActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(String... locationID) {
-            publishProgress("start collect data(OpenWeather)");
+            try {
+                publishProgress("start collect data(OpenWeather)");
 
-            for (String aLocationID : locationID) {
-                weathers = parserOpenWeather
-                        .parse(requestSenderOpenWeather.requestWeather(aLocationID));
+                for (String aLocationID : locationID) {
+                    weathers = parserOpenWeather
+                            .parse(requestSenderOpenWeather.requestWeather(aLocationID));
 
-                publishProgress("parse location - " + Constants.getTownFromId(aLocationID));
+                    publishProgress("parse location - " + Constants.getTownFromId(aLocationID));
 
-                for (Weather weather : weathers) {
-                    database.open();
-                    database.insert(weather, DatabaseHelper.TABLE_OPEN_WEATHER);
-                    database.close();
+                    for (Weather weather : weathers) {
+                        database.open();
+                        database.insert(weather, DatabaseHelper.TABLE_OPEN_WEATHER);
+                        database.close();
 
-                    publishProgress("write in data base id- " + weathers.indexOf(weather));
+                        publishProgress("write in data base id- " + weathers.indexOf(weather));
+                    }
                 }
+            } catch (Exception e) {
+                 database.open();
+                 database.insertLastErrorText(Constants.ERROR_THREAD, getClass());
+                 database.close();
             }
             return null;
         }
@@ -337,7 +404,7 @@ public class ConnectionActivity extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
             addTextViewInConsole("data collect completed(OpenWeather)");
             addTextViewInConsole("all data collection completed");
-            tvLastDataDate.setText(searchLastConnectionDate(Constants.YYYY_MM_DD));
+            tvLastDataDate.setText(searchLastEffectiveDateInAllTables(Constants.TABLENAMES));
             buttonConnection.setClickable(checkNeedDataUpdate());
         }
     }

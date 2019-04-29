@@ -1,9 +1,13 @@
 package com.example.weather_research;
 
+import com.example.weather_research.date.DatabaseHelper;
+
 public class Constants {
 
     public final static String YYYY_MM_DD_HH_00 = "yyyy-MM-dd HH:00";
     public final static String YYYY_MM_DD = "yyyy-MM-dd";
+
+    public final static String [] TABLENAMES = {DatabaseHelper.TABLE_ACCU_WEATHER, DatabaseHelper.TABLE_OPEN_WEATHER};
 
     public final static String ACCUWEATHER_COM = "https://dataservice.accuweather.com/";
     public final static String ACCUWEATHER_FORECAST_5day = "forecasts/v1/daily/5day/";
@@ -32,8 +36,8 @@ public class Constants {
     public static final String ERROR_ACTIVITY = "activity error";
     public final static String ERROR = "error";
     public static final String ERROR_NULL = "not error message";
-
-    public static final String MESSAGE_SOME_DATA_EMPTY = "data - empty";
+    public static final String ERROR_DATA_EMPTY = "data empty";
+    public static final String ERROR_THREAD = "thread error";
 
     public static final int IDD_DELETE = 0;
 

@@ -22,19 +22,14 @@ public class DatabaseAdapter {
         dbHelper = new DatabaseHelper(context.getApplicationContext());
     }
 
-    public DatabaseAdapter open(){
-        database = dbHelper.getWritableDatabase();
-        return this;
-    }
-
-    public void close(){
-        dbHelper.close();
-    }
-
-    private Cursor getAllEntries(String tableName){
-        String[] columns = new String[] {DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_EFFECTIVE_DATE, DatabaseHelper.COLUMN_DATE
-                , DatabaseHelper.COLUMN_TEMPERATURE, DatabaseHelper.COLUMN_LOCATION, DatabaseHelper.COLUMN_SOURCE};
-        return  database.query(tableName, columns, null, null, null, null, null);
+    public long insert(Weather weather, String tableName){
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseHelper.COLUMN_EFFECTIVE_DATE, weather.getEffectiveDate());
+        cv.put(DatabaseHelper.COLUMN_DATE, weather.getDate());
+        cv.put(DatabaseHelper.COLUMN_TEMPERATURE, weather.getTemperature());
+        cv.put(DatabaseHelper.COLUMN_LOCATION, weather.getLocation());
+        cv.put(DatabaseHelper.COLUMN_SOURCE, weather.getSource());
+        return  database.insert(tableName, null, cv);
     }
 
     public ArrayList<Weather> getWeathers(String tableName){
@@ -56,7 +51,7 @@ public class DatabaseAdapter {
         return  weathers;
     }
 
-    public List<Weather> getWeathers(String needEffectiveDate, String tableName){
+    public ArrayList<Weather> getWeathers(String needEffectiveDate, String tableName){
         ArrayList<Weather> weathers = new ArrayList<>();
         Cursor cursor = getAllEntries(tableName);
         if(cursor.moveToFirst()){
@@ -77,29 +72,7 @@ public class DatabaseAdapter {
         return  weathers;
     }
 
-    public ArrayList<Integer> getWeathersIdWithEffectiveDate(String needEffectiveDate, String tableName){
-        ArrayList<Integer> weathersID = new ArrayList<>();
-        Cursor cursor = getAllEntries(tableName);
-        if(cursor.moveToFirst()){
-            do{
-                int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
-                String effectiveDate = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_EFFECTIVE_DATE));
-
-                if(effectiveDate.equals(needEffectiveDate)) {
-                    weathersID.add(id);
-                }
-            }
-            while (cursor.moveToNext());
-        }
-        cursor.close();
-        return  weathersID;
-    }
-
-    public long getCount(String tableName){
-        return DatabaseUtils.queryNumEntries(database, tableName);
-    }
-
-    public Weather getWeather(long id, String tableName){
+    public Weather getWeather(int id, String tableName){
         Weather weather = null;
         String query = String.format("SELECT * FROM %s WHERE %s=?", tableName, DatabaseHelper.COLUMN_ID);
         Cursor cursor = database.rawQuery(query, new String[]{ String.valueOf(id)});
@@ -115,27 +88,7 @@ public class DatabaseAdapter {
         return  weather;
     }
 
-    public String getErrorText(long id){
-        String errorText = null;
-        String query = String.format("SELECT * FROM %s WHERE %s=?", DatabaseHelper.TABLE_ERROR_MESSAGES, DatabaseHelper.COLUMN_ID);
-        Cursor cursor = database.rawQuery(query, new String[]{ String.valueOf(id)});
-        if(cursor.moveToFirst()){
-           errorText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_ERROR_TEXT));
-        }
-        cursor.close();
-        return  errorText;
-    }
-
-    public void insertLastErrorText(String errorMessage, Class c){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-
-        String finalMessage = errorMessage + "-" + c.getName() + "-" + dateFormat.format(new Date());
-        ContentValues cv = new ContentValues();
-        cv.put(DatabaseHelper.COLUMN_ERROR_TEXT, finalMessage);
-        database.insert(DatabaseHelper.TABLE_ERROR_MESSAGES, null, cv);
-    }
-
-    public Weather getWeather(int id, String tableName){
+    public Weather getWeather(long id, String tableName){
         Weather weather = null;
         String query = String.format("SELECT * FROM %s WHERE %s=?", tableName, DatabaseHelper.COLUMN_ID);
         Cursor cursor = database.rawQuery(query, new String[]{ String.valueOf(id)});
@@ -167,14 +120,77 @@ public class DatabaseAdapter {
         return  weather;
     }
 
-    public long insert(Weather weather, String tableName){
+    public ArrayList<Integer> getWeathersIds(String needEffectiveDate, String tableName){
+        ArrayList<Integer> weathersID = new ArrayList<>();
+        Cursor cursor = getAllEntries(tableName);
+        if(cursor.moveToFirst()){
+            do{
+                int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
+                String effectiveDate = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_EFFECTIVE_DATE));
+
+                if(effectiveDate.equals(needEffectiveDate)) {
+                    weathersID.add(id);
+                }
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        return  weathersID;
+    }
+
+    public ArrayList<Integer> getWeathersIds(String tableName){
+        ArrayList<Integer> weathersID = new ArrayList<>();
+        Cursor cursor = getAllEntries(tableName);
+        if(cursor.moveToFirst()){
+            do{
+                int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
+                //String effectiveDate = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_EFFECTIVE_DATE));
+                weathersID.add(id);
+
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        return  weathersID;
+    }
+
+    public DatabaseAdapter open(){
+        database = dbHelper.getWritableDatabase();
+        return this;
+    }
+
+    public void close(){
+        dbHelper.close();
+    }
+
+    private Cursor getAllEntries(String tableName){
+        String[] columns = new String[] {DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_EFFECTIVE_DATE, DatabaseHelper.COLUMN_DATE
+                , DatabaseHelper.COLUMN_TEMPERATURE, DatabaseHelper.COLUMN_LOCATION, DatabaseHelper.COLUMN_SOURCE};
+        return  database.query(tableName, columns, null, null, null, null, null);
+    }
+
+    public long getCount(String tableName){
+        return DatabaseUtils.queryNumEntries(database, tableName);
+    }
+
+    public String getErrorText(long id){
+        String errorText = null;
+        String query = String.format("SELECT * FROM %s WHERE %s=?", DatabaseHelper.TABLE_ERROR_MESSAGES, DatabaseHelper.COLUMN_ID);
+        Cursor cursor = database.rawQuery(query, new String[]{ String.valueOf(id)});
+        if(cursor.moveToFirst()){
+           errorText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_ERROR_TEXT));
+        }
+        cursor.close();
+        return  errorText;
+    }
+
+    public void insertLastErrorText(String errorMessage, Class c){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+
+        String finalMessage = errorMessage + "-" + c.getName() + "-" + dateFormat.format(new Date());
         ContentValues cv = new ContentValues();
-        cv.put(DatabaseHelper.COLUMN_EFFECTIVE_DATE, weather.getEffectiveDate());
-        cv.put(DatabaseHelper.COLUMN_DATE, weather.getDate());
-        cv.put(DatabaseHelper.COLUMN_TEMPERATURE, weather.getTemperature());
-        cv.put(DatabaseHelper.COLUMN_LOCATION, weather.getLocation());
-        cv.put(DatabaseHelper.COLUMN_SOURCE, weather.getSource());
-        return  database.insert(tableName, null, cv);
+        cv.put(DatabaseHelper.COLUMN_ERROR_TEXT, finalMessage);
+        database.insert(DatabaseHelper.TABLE_ERROR_MESSAGES, null, cv);
     }
 
     public void delete(int id, String tableName){
