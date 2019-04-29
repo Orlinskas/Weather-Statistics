@@ -1,11 +1,13 @@
 package com.example.weather_research;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 
 public class AppContext extends Application {
 
-    private static Context mContext;
+    @SuppressLint("StaticFieldLeak")
+    public static Context mContext;
 
     public static Context getContext() {
         return mContext;

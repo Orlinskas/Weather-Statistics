@@ -8,6 +8,8 @@ import android.os.Bundle;
 
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -72,6 +74,7 @@ public class ConnectionActivity extends AppCompatActivity {
         showLastErrorInGlobalConsole();
 
         AppContext.setContext(this);
+
     }
 
     public String searchLastEffectiveDateInAllTables(String[] tableName){
@@ -189,6 +192,32 @@ public class ConnectionActivity extends AppCompatActivity {
 
     public void onClickDeleteAllFromLastEffectiveDate(View view) {
         showDialog(Constants.IDD_DELETE);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    public void onClickMenuItem(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_graphics:
+                ActivityOpener.openActivity(getApplicationContext(), GraphicsActivity.class);
+                break;
+            case R.id.action_connection:
+                ActivityOpener.openActivity(getApplicationContext(), ConnectionActivity.class);
+                break;
+            case R.id.action_data:
+                ActivityOpener.openActivity(getApplicationContext(), DataActivity.class);
+                break;
+            case R.id.action_settings:
+                ActivityOpener.openActivity(getApplicationContext(), SettingsActivity.class);
+                break;
+            case R.id.action_help:
+                ActivityOpener.openActivity(getApplicationContext(), HelpActivity.class);
+                break;
+        }
     }
 
     @Override

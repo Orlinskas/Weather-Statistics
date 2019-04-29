@@ -65,4 +65,37 @@ public class Constants {
         }
     }
 
+    public final static String getTownFromName(String id, String tableName){
+
+        if(tableName.equals(DatabaseHelper.TABLE_OPEN_WEATHER)){
+            switch (id) {
+                case "Kharkiv":
+                    return "Харьков";
+                case "Moskva":
+                    return "Москва";
+                case "Vilnius":
+                    return "Вильнюс";
+                case "Lublin":
+                    return "Люблин";
+                default: return "not found";
+            }
+        }
+        if(tableName.equals(DatabaseHelper.TABLE_ACCU_WEATHER)) {
+            switch (id) {
+                case "kharkiv":
+                    return "Харьков";
+                case "moscow":
+                    return "Москва";
+                case "vilnius":
+                    return "Вильнюс";
+                case "lublin":
+                    return "Люблин";
+                default: return "not found";
+            }
+        }
+        else {
+            return "not found";
+        }
+    }
+
 }
