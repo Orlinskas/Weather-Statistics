@@ -11,62 +11,97 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="208dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:layout_marginTop="3dp"
-            app:srcCompat="@drawable/logo_in_activity" />
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="208dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="3dp"
+                app:srcCompat="@drawable/logo_in_activity"
+                android:contentDescription="Logo" />
 
-        <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/tabHost"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
-
-            <LinearLayout
+            <TabHost
+                android:id="@+id/tabHost"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
 
-                <TabWidget
-                    android:id="@android:id/tabs"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <FrameLayout
-                    android:id="@android:id/tabcontent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:id="@+id/tab_host_ll_first_button"
+                    <TabWidget
+                        android:id="@android:id/tabs"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp" />
 
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/tab_host_ll_second_button"
+                    <FrameLayout
+                        android:id="@android:id/tabcontent"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_height="match_parent">
 
-                    </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/tab_host_ll_Api_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/tab_host_ll_third_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                            <Spinner
+                                android:id="@+id/activity_data_ll_spiner_ApiName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:entries="@array/ApiName" />
+                        </LinearLayout>
 
-                    </LinearLayout>
-                </FrameLayout>
-            </LinearLayout>
-        </TabHost>
+                        <LinearLayout
+                            android:id="@+id/tab_host_ll_location_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
 
+                            <Spinner
+                                android:id="@+id/activity_data_ll_spiner_LocationName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:entries="@array/LocationName" />
+                        </LinearLayout>
 
+                        <LinearLayout
+                            android:id="@+id/tab_host_ll_effectiveDate_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/activity_data_tv_effective_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="18sp"
+                                    android:text="Список дат, когда данные были собраны" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/tab_host_ll_date_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/activity_data_tv_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="TextView" />
+                        </LinearLayout>
+                    </FrameLayout>
+                </LinearLayout>
+            </TabHost>
     </LinearLayout>
 </ScrollView>

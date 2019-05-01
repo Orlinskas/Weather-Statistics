@@ -12,5 +12,34 @@
     <string name="need_data_update">Нужно обновить данные, в 12–13 часов</string>
     <string name="dont_need_data_update_do_tomorow">Данные соответствуют, обновите завтра</string>
 
+    <string-array name="ApiName">
+        <item>All</item>
+        <item>OpenWeather</item>
+        <item>AccuWeather</item>
+    </string-array>
+
+    <string-array name="LocationName">
+        <item>All</item>
+        <item>Харьков</item>
+        <item>Москва</item>
+        <item>Вильнюс</item>
+        <item>Люблин</item>
+    </string-array>
+
+    <string-array name="EffectiveDate">
+        <item>All</item>
+        <item>Харьков</item>
+        <item>Москва</item>
+        <item>Вильнюс</item>
+        <item>Люблин</item>
+    </string-array>
+
+    <string-array name="Date">
+        <item>All</item>
+        <item>Харьков</item>
+        <item>Москва</item>
+        <item>Вильнюс</item>
+        <item>Люблин</item>
+    </string-array>
 
 </resources>

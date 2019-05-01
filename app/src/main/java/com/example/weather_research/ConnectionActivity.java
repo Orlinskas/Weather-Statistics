@@ -343,7 +343,7 @@ public class ConnectionActivity extends AppCompatActivity {
                     weathers = parserAcuuWeather
                             .parse(requestSenderAccuWeather.requestWeather(aLocationID));
 
-                    publishProgress("parse location - " + Constants.getTownFromId(aLocationID));
+                    publishProgress("parse location - " + Constants.getTownNameFromAPI_Id(aLocationID));
 
                     for (Weather weather : weathers) {
                         database.open();
@@ -403,7 +403,7 @@ public class ConnectionActivity extends AppCompatActivity {
                     weathers = parserOpenWeather
                             .parse(requestSenderOpenWeather.requestWeather(aLocationID));
 
-                    publishProgress("parse location - " + Constants.getTownFromId(aLocationID));
+                    publishProgress("parse location - " + Constants.getTownNameFromAPI_Id(aLocationID));
 
                     for (Weather weather : weathers) {
                         database.open();
