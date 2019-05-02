@@ -20,7 +20,21 @@
                 app:srcCompat="@drawable/logo_in_activity"
                 android:contentDescription="Logo" />
 
-            <TabHost
+        <TextView
+            android:id="@+id/activity_data_tv_search_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="поиск в -..." />
+
+        <Button
+            android:id="@+id/activity_data_btn_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickSearchButton"
+            android:text="Поиск" />
+
+        <TabHost
                 android:id="@+id/tabHost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,10 +112,62 @@
                                     android:id="@+id/activity_data_tv_date"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="TextView" />
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="18sp"
+                                    android:text="Список доступных прогнозов" />
                         </LinearLayout>
                     </FrameLayout>
                 </LinearLayout>
             </TabHost>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorBlack"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/darker_gray"
+                android:text="№" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/darker_gray"
+                android:text="EfDate" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/darker_gray"
+                android:text="Date" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/darker_gray"
+                android:text="Location" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/darker_gray"
+                android:text="Temperature" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
     </LinearLayout>
 </ScrollView>

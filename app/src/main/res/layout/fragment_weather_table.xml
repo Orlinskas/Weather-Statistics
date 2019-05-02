@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_weather_table_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@color/colorBlack"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:id="@+id/fragment_weather_table_tv_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@android:color/darker_gray"
+        android:text="№" />
+
+    <TextView
+        android:id="@+id/fragment_weather_table_tv_efDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@android:color/darker_gray"
+        android:text="EfDate" />
+
+    <TextView
+        android:id="@+id/fragment_weather_table_tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@android:color/darker_gray"
+        android:text="Date" />
+
+    <TextView
+        android:id="@+id/fragment_weather_table_tv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@android:color/darker_gray"
+        android:text="Location" />
+
+    <TextView
+        android:id="@+id/fragment_weather_table_tv_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@android:color/darker_gray"
+        android:text="Temperature" />
+</LinearLayout>
