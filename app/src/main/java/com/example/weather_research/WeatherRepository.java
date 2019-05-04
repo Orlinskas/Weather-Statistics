@@ -13,7 +13,6 @@ public class WeatherRepository implements WeatherRepositoryInterface {
     private DatabaseAdapter database;
     private ArrayList<Weather> weathers = new ArrayList<>();
 
-
     @Override
     public Weather findWeatherByDate(String tableName, String needLocation, String needEffectiveDate, String date) {
 
@@ -65,7 +64,6 @@ public class WeatherRepository implements WeatherRepositoryInterface {
             e.printStackTrace();
         }
 
-        //String location = getLocationFromTownName(location, tableName);
         Iterator <Weather> weatherIterator = weathers.iterator();
 
         try {
@@ -92,13 +90,39 @@ public class WeatherRepository implements WeatherRepositoryInterface {
             e.printStackTrace();
         }
 
-        //String location = getLocationFromTownName(location, tableName);
         Iterator <Weather> weatherIterator = weathers.iterator();
 
         try {
             while(weatherIterator.hasNext()) {
                 Weather weather = weatherIterator.next();
-                if (!weather.getLocation().equals(location) & !weather.getEffectiveDate().equals(needEffectiveData)){
+                if (!weather.getLocation().equals(location)){
+                    weatherIterator.remove();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return weathers;
+    }
+
+    public ArrayList<Weather> findWeathers(String tableName, String location, String needEffectiveData, String needDate){
+
+        try {
+            database = new DatabaseAdapter(AppContext.getContext());
+            database.open();
+            weathers = database.getWeathers(needEffectiveData, tableName);
+            database.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Iterator <Weather> weatherIterator = weathers.iterator();
+
+        try {
+            while(weatherIterator.hasNext()) {
+                Weather weather = weatherIterator.next();
+                if (!weather.getLocation().equals(location)
+                        | !weather.getDate().equals(needDate)){
                     weatherIterator.remove();
                 }
             }
@@ -139,7 +163,7 @@ public class WeatherRepository implements WeatherRepositoryInterface {
 
         for (Weather weather : weathers){
             if (weather.getEffectiveDate().equals(needEffectiveDates) &
-                    weather.getLocation().equals(getLocationFromTownName(location, tableName)))
+                    weather.getLocation().equals(location))
 
                 allDates.add(weather.getDate());
         }
@@ -185,9 +209,7 @@ public class WeatherRepository implements WeatherRepositoryInterface {
                 default:
                     return "not found";
             }
-
         }
-
         if (tableName.equals(DatabaseHelper.TABLE_OPEN_WEATHER)){
             switch (location) {
                 case "Харьков":

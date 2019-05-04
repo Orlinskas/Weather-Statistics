@@ -63,12 +63,27 @@
                             android:layout_height="match_parent"
                             android:orientation="vertical">
 
-                            <Spinner
-                                android:id="@+id/activity_data_ll_spiner_ApiName"
+                            <Button
+                                android:id="@+id/activity_data_btn_api_all"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:entries="@array/ApiName" />
+                                android:layout_height="match_parent"
+                                android:onClick="onClickApiName"
+                                android:text="All" />
+
+                            <Button
+                                android:id="@+id/activity_data_btn_api_open_weather"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:onClick="onClickApiName"
+                                android:text="OpenWeather" />
+
+                            <Button
+                                android:id="@+id/activity_data_btn_api_accu_weather"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:onClick="onClickApiName"
+                                android:text="AccuWeather" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -77,12 +92,35 @@
                             android:layout_height="match_parent"
                             android:orientation="vertical">
 
-                            <Spinner
-                                android:id="@+id/activity_data_ll_spiner_LocationName"
+                            <Button
+                                android:id="@+id/activity_data_btn_location_kh"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:entries="@array/LocationName" />
+                                android:layout_height="match_parent"
+                                android:onClick="onClickApiLocation"
+                                android:text="Харьков" />
+
+                            <Button
+                                android:id="@+id/activity_data_btn_location_msc"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:onClick="onClickApiLocation"
+                                android:text="Москва" />
+
+                            <Button
+                                android:id="@+id/activity_data_btn_location_vl"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:onClick="onClickApiLocation"
+                                android:text="Вильнюс" />
+
+                            <Button
+                                android:id="@+id/activity_data_btn_location_lb"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:onClick="onClickApiLocation"
+                                android:text="Люблин" />
+
+
                         </LinearLayout>
 
                         <LinearLayout
