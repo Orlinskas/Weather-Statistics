@@ -149,6 +149,8 @@ public class WeatherRepository implements WeatherRepositoryInterface {
         allEffectiveDates.clear();
         allEffectiveDates.addAll(set);
 
+
+
         return allEffectiveDates;
     }
 
@@ -169,6 +171,24 @@ public class WeatherRepository implements WeatherRepositoryInterface {
         }
 
         return allDates;
+    }
+
+    public String findLastEffectiveDate (String tableName, String location){
+        ArrayList<Weather> weathers = findWeathers(tableName, location);
+
+        return weathers.get(weathers.size() - 1).getEffectiveDate();
+    }
+
+    public String findPreLastEffectiveDate (String tableName, String location){
+        ArrayList<Weather> weathers = findWeathers(tableName, location);
+        String lastEffectiveDate = weathers.get(weathers.size() - 1).getEffectiveDate();
+
+        for(int i = weathers.size() - 1; i != 0; i--){
+            if (!weathers.get(i).getEffectiveDate().equals(lastEffectiveDate)){
+                return weathers.get(i).getEffectiveDate();
+            }
+        }
+        return weathers.get(weathers.size()-41).getEffectiveDate();
     }
 
     public static String getTownNameFromDataLocation(String location){

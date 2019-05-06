@@ -18,7 +18,7 @@
         <item>AccuWeather</item>
     </string-array>
 
-    <string-array name="LocationName">
+    <string-array name="location_name">
         <item>All</item>
         <item>Харьков</item>
         <item>Москва</item>
@@ -40,6 +40,13 @@
         <item>Москва</item>
         <item>Вильнюс</item>
         <item>Люблин</item>
+    </string-array>
+
+    <string-array name="graphics_list">
+        <item>На сегодня (OpenWeather)</item>
+        <item>Точность на один день</item>
+        <item>Точность на два дня</item>
+        <item>Точность на три дня</item>
     </string-array>
 
 </resources>

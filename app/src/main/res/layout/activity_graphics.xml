@@ -1,148 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <ScrollView
-        android:id="@+id/activity_main_sv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<ScrollView android:id="@+id/activity_graphics_sv"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ProgressBar
-                android:id="@+id/progressBar2"
-                style="?android:attr/progressBarStyleHorizontal"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/activity_main_et_api1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:text="Api 1"
-                android:textSize="24sp" />
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="208dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3dp"
+                    android:contentDescription="Logo"
+                    app:srcCompat="@drawable/logo_in_activity" />
 
-            <TextView
-                android:id="@+id/activity_main_et_api2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginTop="0dp"
-                android:ems="10"
-                android:text="Api 2"
-                android:textSize="24sp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/activity_main_et_api3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:text="Api 3"
-                android:textSize="24sp" />
+                    <Spinner
+                        android:id="@+id/activity_graphics_spn_graphics_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:entries="@array/graphics_list" />
 
-            <TextView
-                android:id="@+id/activity_main_et_api4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:text="Api 4"
-                android:textSize="24sp" />
+                    <Spinner
+                        android:id="@+id/activity_graphics_spn_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:entries="@array/location_name" />
 
-            <TextView
-                android:id="@+id/activity_main_et_api5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:text="Api 5"
-                android:textSize="24sp" />
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/activity_main_et_api6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:text="Api 6"
-                android:textSize="24sp" />
+
+            </LinearLayout>
 
             <Button
-                android:id="@+id/activity_main_btn"
+                android:id="@+id/button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:onClick="onClickButtonGetApi"
-                android:text="Получить АПИ" />
+                android:layout_height="match_parent"
+                android:layout_margin="3dp"
+                android:onClick="onClickButtonShowGraphic"
+                android:text="Показать график" />
 
-            <Button
-                android:id="@+id/btn_saveData"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:onClick="onClickButtonSaveData"
-                android:text="Записать в БД" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="400dp"
+                android:id="@+id/graphics_activity_fragment_container">
 
-            <TextView
-                android:id="@+id/activity_main_et_data1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:text="data"
-                android:textSize="24sp" />
-            <TextView
-                android:id="@+id/activity_main_et_data2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:text="data"
-                android:textSize="24sp" />
-            <TextView
-                android:id="@+id/activity_main_et_data3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:text="data"
-                android:textSize="24sp" />
-            <TextView
-                android:id="@+id/activity_main_et_data4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:text="data"
-                android:textSize="24sp" />
-            <TextView
-                android:id="@+id/activity_main_et_data5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:text="data"
-                android:textSize="24sp" />
-            <TextView
-                android:id="@+id/activity_main_et_data6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:text="data"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/buttonGetData"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Получить из базы"
-                android:onClick="onClickButtonGetData"/>
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
