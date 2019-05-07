@@ -2,6 +2,8 @@ package com.example.weather_research;
 
 import com.example.weather_research.date.DatabaseHelper;
 
+import java.util.ArrayList;
+
 public class Constants {
 
     public final static String YYYY_MM_DD_HH_00 = "yyyy-MM-dd HH:00";
@@ -65,6 +67,13 @@ public class Constants {
         }
     }
 
-
+    public static ArrayList<String> getLocations(){
+        ArrayList<String> locations = new ArrayList<>();
+        locations.add("Харьков");
+        locations.add("Москва");
+        locations.add("Вильнюс");
+        locations.add("Люблин");
+        return locations;
+    }
 
 }

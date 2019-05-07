@@ -27,13 +27,11 @@ public class WidgetChartTodayFragment extends Fragment {
 
     private View view;
     private LineChart mChart;
-    private String apiName, location, needEffectiveDate;
+    private String location;
+    private ArrayList<String> locations = Constants.getLocations();
     private int graphicId;
 
     WeatherRepository weatherRepository = new WeatherRepository();
-    ArrayList<Weather> weathers = new ArrayList<>();
-    ArrayList<String> dates = new ArrayList<>();
-    ArrayList<Float> temperatures = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_graph_chart, container, false);
@@ -44,61 +42,45 @@ public class WidgetChartTodayFragment extends Fragment {
             location = bundle.getString("locationName");
         }
 
-        switch (graphicId){
-            case 0:
-                getDataFromChartToday();
-                break;
-        }
-
         mChart = view.findViewById(R.id.fragment_graph_chart_line_chart);
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
         mChart.setBackgroundColor(Color.LTGRAY);
 
-        XAxis xAxis = mChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextSize(12f);
-        xAxis.setTextColor(Color.BLACK);
-        xAxis.setDrawGridLines(true);
-        xAxis.setGranularity(1f);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return   dates.get((int) value - 1);  // xVal is a string array xVal[(int) value-1];
-            }
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
-        });
 
-        ArrayList<Entry> openWeatherValues = new ArrayList<>();
+        switch (graphicId){
+            case 0:
+                if (location.equals("All")){
+                    for (String location : locations){
+                        ArrayList<Weather> weathers = findNeedWeathersFromTodayChart(DatabaseHelper.TABLE_OPEN_WEATHER, location);
+                        ArrayList<Float> temperatures = dataYAxis(weathers);
+                        LineDataSet lineDataSet = lineDataSet(temperatures, location);
+                        dataSets.add(lineDataSet);
 
-        for (int i = 1; i <= temperatures.size(); i++) {
-            openWeatherValues.add(new Entry(i, temperatures.get(i -1)));
+                        dataXAxis(weathers, false);
+                    }
+                }
+                else {
+                    ArrayList<Weather> weathers = findNeedWeathersFromTodayChart(DatabaseHelper.TABLE_OPEN_WEATHER, location);
+                    ArrayList<Float> temperatures = dataYAxis(weathers);
+                    LineDataSet lineDataSet = lineDataSet(temperatures, location);
+                    dataSets.add(lineDataSet);
+
+                    dataXAxis(weathers, false);
+                }
+                break;
         }
 
-        LineDataSet openWeatherLine = new LineDataSet(openWeatherValues, location);
-
-        openWeatherLine.setFillAlpha(110);
-        openWeatherLine.setColor(Color.RED);
-        openWeatherLine.setLineWidth(3f);
-        openWeatherLine.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        openWeatherLine.setValueTextSize(12f);
-        openWeatherLine.setValueTextColor(Color.GRAY);
-        openWeatherLine.setCircleColor(Color.GRAY);
-        openWeatherLine.setCircleRadius(4f);
-
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(openWeatherLine);
-
-        LineData data = new LineData((dataSets));
-
-        mChart.setData(data);
+        LineData lineData = new LineData(dataSets);
+        mChart.setData(lineData);
 
         return view;
     }
 
-    public void getDataFromChartToday(){
-        String tableName = DatabaseHelper.TABLE_OPEN_WEATHER;
+    public ArrayList<Weather> findNeedWeathersFromTodayChart(String tableName, String location){
+        ArrayList<Weather> weathers;
         location = WeatherRepository.getLocationFromTownName(location, tableName);
         String effectiveDate = weatherRepository.findPreLastEffectiveDate(tableName, location);
         SimpleDateFormat searchFormat = new SimpleDateFormat(Constants.YYYY_MM_DD, Locale.ENGLISH);
@@ -124,9 +106,82 @@ public class WidgetChartTodayFragment extends Fragment {
             needWeathers.add(weathers.get(oneMoreWeatherId));
         }
 
-        for (Weather weather : needWeathers){
-            dates.add(weather.getDate().substring(11));
+        return needWeathers;
+    }
+
+    public ArrayList<Float> dataYAxis (ArrayList<Weather> weathers){
+        ArrayList<Float> temperatures = new ArrayList<>();
+
+        for (Weather weather : weathers){
             temperatures.add(weather.getTemperature());
         }
+
+        return temperatures;
     }
+
+    public LineDataSet lineDataSet (ArrayList<Float> temperatures, String location){
+
+        ArrayList<Entry> openWeatherValues = new ArrayList<>();
+
+        for (int i = 1; i <= temperatures.size(); i++) {
+            openWeatherValues.add(new Entry(i, temperatures.get(i -1)));
+        }
+
+        LineDataSet lineData = new LineDataSet(openWeatherValues, location);
+
+        lineData.setFillAlpha(110);
+
+        switch (location){
+            case "Харьков":
+                lineData.setColor(Color.RED);
+                break;
+            case "Москва":
+                lineData.setColor(Color.BLUE);
+                break;
+            case "Вильнюс":
+                lineData.setColor(Color.GREEN);
+                break;
+            case "Люблин":
+                lineData.setColor(Color.YELLOW);
+                break;
+        }
+        lineData.setLineWidth(3f);
+        lineData.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineData.setValueTextSize(12f);
+        lineData.setValueTextColor(Color.GRAY);
+        lineData.setCircleColor(Color.GRAY);
+        lineData.setCircleRadius(4f);
+
+        return lineData;
+    }
+
+    public void dataXAxis(ArrayList<Weather> weathers, boolean aLotDays){
+        final ArrayList<String> dates = new ArrayList<>();
+        int substring = 11;
+
+        if (aLotDays) {
+            substring = 8;
+        }
+
+        for (Weather weather : weathers){
+            dates.add(weather.getDate().substring(substring));
+            //temperatures.add(weather.getTemperature());
+        }
+
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextSize(12f);
+        xAxis.setTextColor(Color.BLACK);
+        xAxis.setDrawGridLines(true);
+        xAxis.setGranularity(1f);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return   dates.get((int) value - 1);  // xVal is a string array xVal[(int) value-1];
+            }
+
+        });
+    }
+
 }
