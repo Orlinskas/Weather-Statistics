@@ -43,7 +43,9 @@
     </string-array>
 
     <string-array name="graphics_list">
-        <item>На сегодня (OpenWeather)</item>
+        <item>На сегодня (OpenWeather вчерашние данные)</item>
+        <item>На сегодня (OpenWeather последние данные)</item>
+        <item>Последние данные (AccuWeather)</item>
         <item>Точность на один день</item>
         <item>Точность на два дня</item>
         <item>Точность на три дня</item>

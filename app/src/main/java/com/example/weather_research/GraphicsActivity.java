@@ -13,15 +13,10 @@ import android.widget.Spinner;
 
 public class GraphicsActivity extends AppCompatActivity {
 
-    Spinner graphicSpinner, locationSpiner;
+    Spinner graphicSpinner, locationSpinner;
     private static final String TAG = "GraphicsActivity";
-    public int graphicId;
+    public int graphicId, countOfGraphics = 0;
     public String locationName;
-
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    WidgetChartTodayFragment widgetChartTodayFragment = new WidgetChartTodayFragment();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +26,7 @@ public class GraphicsActivity extends AppCompatActivity {
         AppContext.setContext(this);
 
         graphicSpinner = findViewById(R.id.activity_graphics_spn_graphics_list);
-        locationSpiner = findViewById(R.id.activity_graphics_spn_location);
+        locationSpinner = findViewById(R.id.activity_graphics_spn_location);
 
     }
 
@@ -63,15 +58,27 @@ public class GraphicsActivity extends AppCompatActivity {
 
     public void onClickButtonShowGraphic(View view) {
         graphicId = graphicSpinner.getSelectedItemPosition();
-        locationName = locationSpiner.getSelectedItem().toString();
-
+        locationName = locationSpinner.getSelectedItem().toString();
         Bundle bundle = new Bundle();
         bundle.putInt("graphicId", graphicId);
         bundle.putString("locationName", locationName);
+
+        WidgetChartTodayFragment widgetChartTodayFragment = new WidgetChartTodayFragment();
         widgetChartTodayFragment.setArguments(bundle);
 
-        fragmentTransaction.add(R.id.graphics_activity_fragment_container, widgetChartTodayFragment);
-        fragmentTransaction.commit();
-
+        if (countOfGraphics == 0){
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.graphics_activity_fragment_container, widgetChartTodayFragment);
+            fragmentTransaction.commit();
+            countOfGraphics++;
+        }
+        else {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.graphics_activity_fragment_container, widgetChartTodayFragment);
+            fragmentTransaction.commit();
+            countOfGraphics++;
+        }
     }
 }
