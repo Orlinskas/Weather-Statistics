@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper  {
     private static final String DATABASE_NAME = "weather.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_OPEN_WEATHER = "OpenWeather";
     public static final String TABLE_ACCU_WEATHER = "AccuWeather";
@@ -15,6 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper  {
     public static final String COLUMN_EFFECTIVE_DATE = "effectiveData";
     public static final String COLUMN_DATE = "data";
     public static final String COLUMN_TEMPERATURE = "temperature";
+    public static final String COLUMN_PRECIPITATION = "precipitation";
     public static final String COLUMN_LOCATION = "location";
     public static final String COLUMN_SOURCE = "source";
     public static final String COLUMN_ERROR_TEXT = "text";
@@ -30,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper  {
                 + COLUMN_EFFECTIVE_DATE + " TEXT NOT NULL, "
                 + COLUMN_DATE + " TEXT NOT NULL, "
                 + COLUMN_TEMPERATURE + " REAL NOT NULL DEFAULT 0.0, "
+                + COLUMN_PRECIPITATION + " INTEGER NOT NULL DEFAULT 0, "
                 + COLUMN_LOCATION + " TEXT NOT NULL, "
                 + COLUMN_SOURCE + " TEXT NOT NULL );";
 
@@ -38,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper  {
                 + COLUMN_EFFECTIVE_DATE + " TEXT NOT NULL, "
                 + COLUMN_DATE + " TEXT NOT NULL, "
                 + COLUMN_TEMPERATURE + " REAL NOT NULL DEFAULT 0.0, "
+                + COLUMN_PRECIPITATION + " INTEGER NOT NULL DEFAULT 0, "
                 + COLUMN_LOCATION + " TEXT NOT NULL, "
                 + COLUMN_SOURCE + " TEXT NOT NULL );";
 

@@ -27,12 +27,24 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
         String temperature = null;
         String sourse = "OpenWeatherMap";
         String location = null;
+        boolean precipitation = false;
 
         for (int index = 0; index <= 39; index++){
             try {
                 JSONObject jsonObjectOpenWeather = new JSONObject(json);
                 JSONArray jsonArrayDailyForecast = jsonObjectOpenWeather.getJSONArray("list");
                 JSONObject jsonObjectDay = jsonArrayDailyForecast.getJSONObject(index);
+
+                try {
+                    JSONObject jsonObjectPrecipitationRain = jsonObjectDay.getJSONObject("rain");
+                    precipitation = true;
+                } catch (Exception ignored) {
+                }
+                try {
+                    JSONObject jsonObjectPrecipitationSnow = jsonObjectDay.getJSONObject("snow");
+                    precipitation = true;
+                } catch (Exception ignored) {
+                }
 
                 date = jsonObjectDay.getString("dt_txt");
                 SimpleDateFormat dateFormatJson = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -71,6 +83,7 @@ public class WeatherParserOpenWeather implements WeatherSourceResponseParseInter
             }
             weather.setSource(sourse);
             weather.setLocation(location);
+            weather.setPrecipitation(precipitation);
             weathers.add(weather);
         }
         return weathers;

@@ -68,6 +68,7 @@ public class WidgetChartTodayFragment extends Fragment {
                     ArrayList<Weather> weathers = findNeedWeathersFromTodayChart(DatabaseHelper.TABLE_OPEN_WEATHER, location);
                     ArrayList<Float> temperatures = dataYAxis(weathers);
                     LineDataSet lineDataSet = lineDataSet(temperatures, location);
+
                     dataSets.add(lineDataSet);
 
                     dataXAxis(weathers, false);
@@ -377,7 +378,7 @@ public class WidgetChartTodayFragment extends Fragment {
         ArrayList<Entry> values = new ArrayList<>();
 
         for (int i = 1; i <= temperatures.size(); i++) {
-            values.add(new Entry(i, temperatures.get(i -1)));
+            values.add(new Entry(i, temperatures.get(i - 1)));
         }
 
         LineDataSet lineData = new LineDataSet(values, location);
@@ -399,7 +400,7 @@ public class WidgetChartTodayFragment extends Fragment {
                 break;
         }
         lineData.setLineWidth(3f);
-        lineData.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineData.setMode(LineDataSet.Mode.LINEAR);
         lineData.setValueTextSize(12f);
         lineData.setValueTextColor(Color.GRAY);
         lineData.setCircleColor(Color.GRAY);
@@ -410,6 +411,7 @@ public class WidgetChartTodayFragment extends Fragment {
 
     public void dataXAxis(ArrayList<Weather> weathers, boolean aLotDays){
         final ArrayList<String> dates = new ArrayList<>();
+        final ArrayList<Boolean> precipitations = new ArrayList<>();
         int substring = 11;
 
         if (aLotDays) {
@@ -418,6 +420,7 @@ public class WidgetChartTodayFragment extends Fragment {
 
         for (Weather weather : weathers){
             dates.add(weather.getDate().substring(substring));
+            precipitations.add(weather.isPrecipitation());
         }
 
         XAxis xAxis = mChart.getXAxis();
@@ -430,9 +433,11 @@ public class WidgetChartTodayFragment extends Fragment {
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
+                if (precipitations.get((int) value - 1)){
+                    return   "(" + dates.get((int) value - 1) + ")";
+                }
                 return   dates.get((int) value - 1);
             }
-
         });
     }
 

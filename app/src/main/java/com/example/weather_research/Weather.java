@@ -5,6 +5,7 @@ public class Weather {
     private String effectiveDate;
     private String date;
     private float temperature;
+    private boolean precipitation;
     private String location;
     private String source;
 
@@ -14,6 +15,15 @@ public class Weather {
         this.temperature = temperature;
         this.location = location;
         this.source = source;
+    }
+
+    public Weather(String effectiveDate, String date, float temperature, String location, String source, int precipitation){
+        this.effectiveDate = effectiveDate;
+        this.date = date;
+        this.temperature = temperature;
+        this.location = location;
+        this.source = source;
+        this.precipitation = precipitation != 0;
     }
 
     public Weather() {
@@ -63,5 +73,24 @@ public class Weather {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public boolean isPrecipitation() {
+        return precipitation;
+    }
+
+    public String getPrecipitation() {
+        if (precipitation){
+            return "rain";
+        }
+        else return " ";
+    }
+
+    public void setPrecipitation(boolean precipitation) {
+        this.precipitation = precipitation;
+    }
+
+    public void setPrecipitation(int precipitation) {
+        this.precipitation = precipitation != 0;
     }
 }

@@ -27,6 +27,7 @@ public class DatabaseAdapter {
         cv.put(DatabaseHelper.COLUMN_EFFECTIVE_DATE, weather.getEffectiveDate());
         cv.put(DatabaseHelper.COLUMN_DATE, weather.getDate());
         cv.put(DatabaseHelper.COLUMN_TEMPERATURE, weather.getTemperature());
+        cv.put(DatabaseHelper.COLUMN_PRECIPITATION, weather.isPrecipitation());
         cv.put(DatabaseHelper.COLUMN_LOCATION, weather.getLocation());
         cv.put(DatabaseHelper.COLUMN_SOURCE, weather.getSource());
         return  database.insert(tableName, null, cv);
@@ -42,8 +43,9 @@ public class DatabaseAdapter {
                 float temperature = cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.COLUMN_TEMPERATURE));
                 String location = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LOCATION));
                 String source = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_SOURCE));
+                int precipitation = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_PRECIPITATION));
 
-                weathers.add(new Weather(effectiveDate, date, temperature, location, source));
+                weathers.add(new Weather(effectiveDate, date, temperature, location, source, precipitation));
             }
             while (cursor.moveToNext());
         }
@@ -61,9 +63,10 @@ public class DatabaseAdapter {
                 float temperature = cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.COLUMN_TEMPERATURE));
                 String location = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LOCATION));
                 String source = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_SOURCE));
+                int precipitation = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_PRECIPITATION));
 
                 if(effectiveDate.equals(needEffectiveDate)) {
-                    weathers.add(new Weather(effectiveDate, date, temperature, location, source));
+                    weathers.add(new Weather(effectiveDate, date, temperature, location, source, precipitation));
                 }
             }
             while (cursor.moveToNext());
@@ -82,7 +85,9 @@ public class DatabaseAdapter {
             float temperature = cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.COLUMN_TEMPERATURE));
             String location = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LOCATION));
             String source = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_SOURCE));
-            weather = new Weather(effectiveDate, date, temperature, location, source);
+            int precipitation = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_PRECIPITATION));
+
+            weather = new Weather(effectiveDate, date, temperature, location, source, precipitation);
         }
         cursor.close();
         return  weather;
@@ -98,7 +103,9 @@ public class DatabaseAdapter {
             float temperature = cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.COLUMN_TEMPERATURE));
             String location = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LOCATION));
             String source = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_SOURCE));
-            weather = new Weather(effectiveDate, date, temperature, location, source);
+            int precipitation = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_PRECIPITATION));
+
+            weather = new Weather(effectiveDate, date, temperature, location, source, precipitation);
         }
         cursor.close();
         return  weather;
@@ -114,7 +121,9 @@ public class DatabaseAdapter {
             float temperature = cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.COLUMN_TEMPERATURE));
             String location = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LOCATION));
             String source = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_SOURCE));
-            weather = new Weather(effectiveDate, date, temperature, location, source);
+            int precipitation = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_PRECIPITATION));
+
+            weather = new Weather(effectiveDate, date, temperature, location, source, precipitation);
         }
         cursor.close();
         return  weather;
@@ -165,7 +174,7 @@ public class DatabaseAdapter {
 
     private Cursor getAllEntries(String tableName){
         String[] columns = new String[] {DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_EFFECTIVE_DATE, DatabaseHelper.COLUMN_DATE
-                , DatabaseHelper.COLUMN_TEMPERATURE, DatabaseHelper.COLUMN_LOCATION, DatabaseHelper.COLUMN_SOURCE};
+                , DatabaseHelper.COLUMN_TEMPERATURE, DatabaseHelper.COLUMN_LOCATION, DatabaseHelper.COLUMN_SOURCE, DatabaseHelper.COLUMN_PRECIPITATION};
         return  database.query(tableName, columns, null, null, null, null, null);
     }
 
@@ -219,6 +228,7 @@ public class DatabaseAdapter {
         cv.put(DatabaseHelper.COLUMN_TEMPERATURE, weather.getTemperature());
         cv.put(DatabaseHelper.COLUMN_LOCATION, weather.getLocation());
         cv.put(DatabaseHelper.COLUMN_SOURCE, weather.getSource());
+        cv.put(DatabaseHelper.COLUMN_PRECIPITATION, weather.isPrecipitation());
         return database.update(tableName, cv, whereClause, null);
     }
 }
